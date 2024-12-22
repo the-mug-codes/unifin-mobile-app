@@ -32,17 +32,22 @@ function MenuButton({ id, icon: MenuIcon, onPress }: MenuButtonProps) {
   const { item, itemIcon, itemIconActive } = styles(colorScheme);
   const pathName = usePathname();
 
-  const pressHandler = () => {
-    onPress(id as Href);
-  };
-
   const isActive = (): boolean => {
     if (pathName == id) return true;
     return false;
   };
 
+  const pressHandler = () => {
+    onPress(id as Href);
+  };
+
   return (
-    <TouchableOpacity style={item} activeOpacity={0.4} onPressIn={pressHandler}>
+    <TouchableOpacity
+      style={item}
+      activeOpacity={0.4}
+      onPressIn={pressHandler}
+      disabled={isActive()}
+    >
       <MenuIcon
         width={24}
         height={24}
@@ -79,7 +84,7 @@ function FloatButton({ onPress }: FloatButtonProps) {
         <View style={floatButtonWrapper}>
           <TouchableOpacity
             style={floatButton}
-            activeOpacity={0.4}
+            activeOpacity={0.8}
             onPressIn={onPressHandler}
           >
             <ActionIcon width={32} height={32} fill={floatButtonIcon.color} />
@@ -124,7 +129,7 @@ function ActionsMenu({
             <View style={modalSheetViewContainer}>
               <TouchableOpacity
                 style={[modalSheetAction, modalSheetActionIncome]}
-                activeOpacity={0.4}
+                activeOpacity={0.8}
                 onPress={() => addTransaction("income")}
               >
                 <IncomeIcon
@@ -136,7 +141,7 @@ function ActionsMenu({
               </TouchableOpacity>
               <TouchableOpacity
                 style={[modalSheetAction, modalSheetActionExpense]}
-                activeOpacity={0.4}
+                activeOpacity={0.8}
                 onPress={() => addTransaction("expense")}
               >
                 <ExpenseIcon
@@ -148,7 +153,7 @@ function ActionsMenu({
               </TouchableOpacity>
               <TouchableOpacity
                 style={[modalSheetAction, modalSheetActionTransfer]}
-                activeOpacity={0.4}
+                activeOpacity={0.8}
                 onPress={() => addTransaction("transfer")}
               >
                 <TransactionsIcon
@@ -322,10 +327,10 @@ const styles = (colorScheme: ColorSchemeName) =>
       fontSize: 18,
       fontFamily: "Nunito-Bold",
       marginLeft: 6,
-      color: COLORS[colorScheme ?? "light"].text.invert,
+      color: COLORS[colorScheme ?? "light"].button.primary.foreground,
     },
     modalSheetActionIcon: {
-      color: COLORS[colorScheme ?? "light"].text.invert,
+      color: COLORS[colorScheme ?? "light"].button.primary.foreground,
     },
     modalSheetActionIncome: {
       backgroundColor: COLORS[colorScheme ?? "light"].green.primary,
@@ -334,6 +339,6 @@ const styles = (colorScheme: ColorSchemeName) =>
       backgroundColor: COLORS[colorScheme ?? "light"].red.primary,
     },
     modalSheetActionTransfer: {
-      backgroundColor: COLORS[colorScheme ?? "light"].brand.primary,
+      backgroundColor: COLORS[colorScheme ?? "light"].button.primary.background,
     },
   });

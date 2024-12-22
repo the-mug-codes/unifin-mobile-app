@@ -37,7 +37,7 @@ function UserAvatar() {
         <Text style={style.userInfoName}>Fulano!</Text>
       </View>
       <TouchableOpacity
-        activeOpacity={0.4}
+        activeOpacity={0.8}
         onPressIn={(event: GestureResponderEvent) => {
           if (process.env.EXPO_OS === "ios") {
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
@@ -90,7 +90,7 @@ export default function Header({ cards }: HeaderProps) {
                         <Text style={style.accountBallance}>{balance}</Text>
                       </View>
                       <TouchableOpacity
-                        activeOpacity={0.4}
+                        activeOpacity={0.8}
                         onPressIn={(event: GestureResponderEvent) => {
                           if (process.env.EXPO_OS === "ios") {
                             Haptics.impactAsync(

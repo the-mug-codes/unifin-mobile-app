@@ -66,6 +66,20 @@ type Colors = {
     primary: string;
     secondary: string;
   };
+  button: {
+    primary: {
+      foreground: string;
+      background: string;
+    };
+    secondary: {
+      foreground: string;
+      background: string;
+    };
+    tertiary: {
+      foreground: string;
+      background: string;
+    };
+  };
   text: {
     primary: string;
     secondary: string;
@@ -105,6 +119,20 @@ export const COLORS: Color = {
       primary: "#2A637D",
       secondary: "#6FCF97",
     },
+    button: {
+      primary:{
+        background:'#2A637D',
+        foreground:'#FFFFFF'
+      },
+      secondary:{
+        background:'#6FCF97',
+        foreground:'#FFFFFF'
+      },
+      tertiary:{
+        background:'#E5E5E5',
+        foreground:'#333333'
+      }
+    },
     text: {
       primary: "#333333",
       secondary: "#888888",
@@ -138,6 +166,20 @@ export const COLORS: Color = {
     brand: {
       primary: "#2A637D",
       secondary: "#6FCF97",
+    },
+    button: {
+      primary: {
+        background: '#1B4758',
+        foreground: '#FFFFFF'
+      },
+      secondary: {
+        background: '#519E73',
+        foreground: '#FFFFFF'
+      },
+      tertiary: {
+        background: '#1A1A1A',
+        foreground: '#CCCCCC'
+      }
     },
     text: {
       primary: "#E5E5E5",
@@ -196,5 +238,5 @@ export const ICONS: Icon = {
   MenuIcon,
   NotificationsIcon,
   ShowIcon,
-  HideIcon
+  HideIcon,
 };

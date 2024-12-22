@@ -172,7 +172,7 @@ export function TransactionListItem({
   };
 
   const openDetailsHandler = (id: string) =>
-    push(`/(main)/transactions/new/${id}`);
+    push(`/(main)/transactions/${id}`);
 
   const transaction = ({
     id,

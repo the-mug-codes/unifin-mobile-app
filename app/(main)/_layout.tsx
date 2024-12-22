@@ -17,8 +17,9 @@ export default function MainLayout({}: MainLayoutProps) {
           <Stack.Screen name="savings" options={{ headerShown: false }} />
           <Stack.Screen name="calendar" options={{ headerShown: false }} />
           <Stack.Screen name="transactions/index" options={{ headerShown: false }} />
-          <Stack.Screen name="transactions/[id]" options={{ headerShown: false, presentation: 'formSheet', animation: 'slide_from_bottom' }} />
-          <Stack.Screen name="transactions/new/[kind]" options={{ headerShown: false, presentation: 'formSheet', animation: 'slide_from_bottom' }} />
+          <Stack.Screen name="transactions/[id]" options={{ headerShown: false, presentation: 'modal' }} />
+          <Stack.Screen name="transactions/new/[kind]" options={{ headerShown: false, presentation: 'modal', animation: 'slide_from_bottom' }} />
+          <Stack.Screen name="transactions/edit/[id]" options={{ headerShown: false, presentation: 'modal' }} />
         </Stack>
       </View>
       <MainMenu />

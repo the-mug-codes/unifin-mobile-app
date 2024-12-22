@@ -46,7 +46,7 @@ export default function Avatar({}: AvatarProps) {
         <Text style={userInfoName}>Fulano!</Text>
       </View>
       <TouchableOpacity
-        activeOpacity={0.4}
+        activeOpacity={0.8}
         onPressIn={notificationHandler}
       >
         <Icon name="warning" size={24} />
