@@ -1,16 +1,19 @@
-import React, { forwardRef, useImperativeHandle, useState } from "react";
+import React, { forwardRef, useImperativeHandle } from "react";
 import { StyleSheet, View, Text, Switch, TextInput } from "react-native";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { getLocales } from "expo-localization";
 import { useTranslation } from "react-i18next";
-
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 
 import { useThemeColor } from "@/hooks/use-theme-color";
 
-import { formatDate } from "@/utils/date-parser";
+import { DateTimePicker } from "@/components/form/date-picker";
+import { InputText } from "@/components/form/input-text";
+import { InputTextArea } from "@/components/form/input-textarea";
+import {
+  mapToItemModel,
+  SelectItemPicker,
+} from "@/components/form/select-item-picker";
 
 import { Colors } from "@/constants/theme";
 
@@ -23,8 +26,6 @@ interface FormProps {
 }
 function Form({ onSubmit }: FormProps, ref: React.Ref<FormRef>) {
   const { t } = useTranslation();
-  const [isDatePickerVisible, setDatePickerVisibility] =
-    useState<boolean>(false);
   const colorScheme = useThemeColor();
   const {
     container,
@@ -54,7 +55,6 @@ function Form({ onSubmit }: FormProps, ref: React.Ref<FormRef>) {
 
   const {
     control,
-    setValue,
     handleSubmit,
     formState: { errors },
   } = useForm({
@@ -71,15 +71,6 @@ function Form({ onSubmit }: FormProps, ref: React.Ref<FormRef>) {
     },
   });
 
-  const showHideDatePickerHandler = () => {
-    setDatePickerVisibility((value: boolean) => !value);
-  };
-
-  const handleConfirm = (date: Date) => {
-    setValue("date", date.toISOString());
-    setDatePickerVisibility(false);
-  };
-
   useImperativeHandle(ref, () => ({
     submitForm: handleSubmit(onSubmit),
   }));
@@ -88,29 +79,18 @@ function Form({ onSubmit }: FormProps, ref: React.Ref<FormRef>) {
     <View style={container}>
       <View style={cols}>
         <View style={[col, marginRight]}>
-          <Text style={label}>Data</Text>
           <Controller
             control={control}
             name="date"
-            render={({ field: { value } }) => (
-              <Text
-                style={[input, errors.date && errorBackground]}
-                onPress={showHideDatePickerHandler}
-              >
-                {formatDate(new Date(value), true)}
-              </Text>
+            render={({ field: { onChange, value } }) => (
+              <DateTimePicker
+                label={t("date")}
+                value={value}
+                haveError={!!errors.date}
+                errorMessage={errors.date?.message}
+                onChange={(value: Date) => onChange(value.toISOString())}
+              />
             )}
-          />
-          <DateTimePickerModal
-            isVisible={isDatePickerVisible}
-            locale={getLocales()[0].languageTag}
-            mode="date"
-            confirmTextIOS="Selecionar"
-            cancelTextIOS="Cancelar"
-            onConfirm={(date) => {
-              handleConfirm(date);
-            }}
-            onCancel={showHideDatePickerHandler}
           />
         </View>
         <View style={marginLeft}>
@@ -130,42 +110,54 @@ function Form({ onSubmit }: FormProps, ref: React.Ref<FormRef>) {
         </View>
       </View>
       {errors.date && <Text style={error}>{errors.date.message}</Text>}
-      <Text style={label}>Conta</Text>
       <Controller
         control={control}
         name="account"
         render={({ field: { onChange, value } }) => (
-          <TextInput
-            style={[input, errors.account && errorBackground]}
-            placeholder="descrição da transação"
-            placeholderTextColor={
-              errors.account ? error.color : colorScheme.text.secondary
-            }
-            value={value}
-            onChangeText={onChange}
+          <SelectItemPicker<any>
+            label={t("account")}
+            items={mapToItemModel(
+              [
+                {
+                  id: "1",
+                  icon: "https://via.placeholder.com/150", // URL de imagem ou componente
+                  displayValue: "Person 1",
+                },
+                {
+                  id: "2",
+                  icon: "https://via.placeholder.com/150",
+                  displayValue: "Person 2",
+                },
+                {
+                  id: "3",
+                  icon: "https://via.placeholder.com/150",
+                  displayValue: "Person 3",
+                },
+              ],
+              "id",
+              "",
+              "displayValue"
+            )}
+            placeholder={t("selectOption")}
+            displayValue={value}
+            haveError={!!errors.date}
+            errorMessage={errors.date?.message}
+            onChange={({ displayValue }) => onChange(displayValue)}
           />
         )}
       />
-      {errors.account && <Text style={error}>{errors.account.message}</Text>}
-      <Text style={label}>Descrição</Text>
       <Controller
         control={control}
         name="description"
         render={({ field: { onChange, value } }) => (
-          <TextInput
-            style={[input, errors.description && errorBackground]}
+          <InputText
+            label={t("description")}
             placeholder="descrição da transação"
-            placeholderTextColor={
-              errors.description ? error.color : colorScheme.text.secondary
-            }
             value={value}
-            onChangeText={onChange}
+            onChange={onChange}
           />
         )}
       />
-      {errors.description && (
-        <Text style={error}>{errors.description.message}</Text>
-      )}
       <Text style={label}>Categoria</Text>
       <Controller
         control={control}
@@ -217,23 +209,18 @@ function Form({ onSubmit }: FormProps, ref: React.Ref<FormRef>) {
         )}
       />
       {errors.tags && <Text style={error}>{errors.tags.message}</Text>}
-      <Text style={label}>Observações</Text>
       <Controller
         control={control}
         name="notes"
         render={({ field: { onChange, value } }) => (
-          <TextInput
-            style={[input, errors.notes && errorBackground]}
+          <InputTextArea
+            label={t("notes")}
             placeholder="descrição da transação"
-            placeholderTextColor={
-              errors.notes ? error.color : colorScheme.text.secondary
-            }
             value={value}
-            onChangeText={onChange}
+            onChange={onChange}
           />
         )}
       />
-      {errors.notes && <Text style={error}>{errors.notes.message}</Text>}
     </View>
   );
 }

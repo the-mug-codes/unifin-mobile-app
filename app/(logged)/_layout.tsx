@@ -1,16 +1,15 @@
 import React from "react";
 import { Stack } from "expo-router";
 import { StyleSheet, View } from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-import MainMenu from "@/components/core/main-menu";
+import { MainMenu } from "@/components/core/main-menu";
 
 interface MainLayoutProps {}
 export default function MainLayout({}: MainLayoutProps) {
   const style = styles();
 
   return (
-    <GestureHandlerRootView>
+    <>
       <View style={style.container}>
         <Stack>
           <Stack.Screen name="index" options={{ headerShown: false }} />
@@ -22,7 +21,7 @@ export default function MainLayout({}: MainLayoutProps) {
           />
           <Stack.Screen
             name="transactions/[id]"
-            options={{ headerShown: false, presentation: "modal" }}
+            options={{ headerShown: false, presentation: "modal"}}
           />
           <Stack.Screen
             name="transactions/new/[kind]"
@@ -30,6 +29,7 @@ export default function MainLayout({}: MainLayoutProps) {
               headerShown: false,
               presentation: "modal",
               animation: "slide_from_bottom",
+              gestureEnabled: false 
             }}
           />
           <Stack.Screen
@@ -39,7 +39,7 @@ export default function MainLayout({}: MainLayoutProps) {
         </Stack>
       </View>
       <MainMenu />
-    </GestureHandlerRootView>
+    </>
   );
 }
 

@@ -20,12 +20,13 @@ import { COLORS } from "@/constants/theme";
 
 import { TransactionKind } from "@/model/transaction";
 import Form from "./ui/form";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 interface TransactionFormProps {
   kind: TransactionKind;
 }
 export default function TransactionForm({ kind }: TransactionFormProps) {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
   const { back } = useRouter();
   const colorScheme = useColorScheme();
   const { container, formContainer, footer } = styles(colorScheme);
@@ -49,23 +50,29 @@ export default function TransactionForm({ kind }: TransactionFormProps) {
   const cancelHandler = () => back();
 
   return (
-    <View style={container}>
-      <Header kind={kind} />
-      <ScrollView
-        contentContainerStyle={formContainer}
-        keyboardDismissMode="interactive"
-      >
-        <Form ref={formRef} onSubmit={saveHandler} />
-      </ScrollView>
-      <KeyboardAvoidingView
-        style={footer}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={65}
-      >
-        <Button text="Cancelar" variant="tertiary" onPressIn={cancelHandler} />
-        <Button text="Salvar" onPressIn={submitFormHandler} />
-      </KeyboardAvoidingView>
-    </View>
+    <BottomSheetModalProvider>
+      <View style={container}>
+        <Header kind={kind} />
+        <ScrollView
+          contentContainerStyle={formContainer}
+          keyboardDismissMode="interactive"
+        >
+          <Form ref={formRef} onSubmit={saveHandler} />
+        </ScrollView>
+        <KeyboardAvoidingView
+          style={footer}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          keyboardVerticalOffset={65}
+        >
+          <Button
+            text="Cancelar"
+            variant="tertiary"
+            onPressIn={cancelHandler}
+          />
+          <Button text="Salvar" onPressIn={submitFormHandler} />
+        </KeyboardAvoidingView>
+      </View>
+    </BottomSheetModalProvider>
   );
 }
 
