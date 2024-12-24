@@ -16,10 +16,11 @@ import { Href, useRouter, usePathname } from "expo-router";
 import { SvgProps } from "react-native-svg";
 import * as Haptics from "expo-haptics";
 
-import { Colors, ICONS } from "@/constants/theme";
+import { Colors } from "@/constants/theme";
 
 import { TransactionKind } from "@/model/transaction";
 import { useThemeColor } from "@/hooks/use-theme-color";
+import { useIcon } from "@/hooks/use-icon";
 
 interface MenuButtonProps {
   id?: Href;
@@ -61,7 +62,7 @@ interface FloatButtonProps {
 }
 function FloatButton({ onPress }: FloatButtonProps) {
   const colorScheme = useThemeColor();
-  const { ActionIcon } = ICONS;
+  const { ActionIcon } = useIcon();
   const {
     floatButtonContainer,
     floatButtonWrapper,
@@ -103,6 +104,7 @@ function ActionsMenu({
   addTransaction,
 }: ActionsMenuProps) {
   const colorScheme = useThemeColor();
+  const { ExpenseIcon, IncomeIcon, TransactionsIcon } = useIcon();
   const {
     modalSheetView,
     modalSheetViewContainer,
@@ -113,7 +115,6 @@ function ActionsMenu({
     modalSheetActionExpense,
     modalSheetActionTransfer,
   } = styles(colorScheme);
-  const { TransactionsIcon, ExpenseIcon, IncomeIcon } = ICONS;
 
   return (
     <BottomSheetModalProvider>
@@ -176,6 +177,7 @@ interface MainMenuProps {}
 export default function MainMenu({}: MainMenuProps) {
   const colorScheme = useThemeColor();
   const transactionModalRef = useRef<BottomSheetModal>(null);
+  const { HomeIcon, CalendarIcon, TransactionsIcon, SavingsIcon } = useIcon();
   const { container, wrapper } = styles(colorScheme);
   const { push } = useRouter();
 
@@ -202,25 +204,21 @@ export default function MainMenu({}: MainMenuProps) {
     <>
       <View style={container}>
         <SafeAreaView style={wrapper}>
-          <MenuButton
-            id="/"
-            icon={ICONS.HomeIcon}
-            onPress={navigationHandler}
-          />
+          <MenuButton id="/" icon={HomeIcon} onPress={navigationHandler} />
           <MenuButton
             id="/transactions"
-            icon={ICONS.TransactionsIcon}
+            icon={TransactionsIcon}
             onPress={navigationHandler}
           />
           <FloatButton onPress={showHideActionsHandler} />
           <MenuButton
             id="/calendar"
-            icon={ICONS.CalendarIcon}
+            icon={CalendarIcon}
             onPress={navigationHandler}
           />
           <MenuButton
             id="/savings"
-            icon={ICONS.SavingsIcon}
+            icon={SavingsIcon}
             onPress={navigationHandler}
           />
         </SafeAreaView>

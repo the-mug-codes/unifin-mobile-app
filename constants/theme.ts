@@ -1,18 +1,4 @@
-import { FC } from "react";
 import { FontSource } from "expo-font";
-import { SvgProps } from "react-native-svg";
-import ActionIcon from "@/assets/images/icons/action.svg";
-import CalendarIcon from "@/assets/images/icons/calendar.svg";
-import HomeIcon from "@/assets/images/icons/home.svg";
-import IncomeIcon from "@/assets/images/icons/income.svg";
-import ExpenseIcon from "@/assets/images/icons/expense.svg";
-import SavingsIcon from "@/assets/images/icons/savings.svg";
-import TransactionsIcon from "@/assets/images/icons/transactions.svg";
-import TransferIcon from "@/assets/images/icons/transfer.svg";
-import MenuIcon from "@/assets/images/icons/menu.svg";
-import NotificationsIcon from "@/assets/images/icons/notifications.svg";
-import ShowIcon from "@/assets/images/icons/show.svg";
-import HideIcon from "@/assets/images/icons/hide.svg";
 
 export const FONTS: Record<string, FontSource> = {
   PoppinsBlack: require("../assets/fonts/poppins/Poppins-Black.ttf"),
@@ -120,18 +106,18 @@ export const COLORS: Color = {
       secondary: "#6FCF97",
     },
     button: {
-      primary:{
-        background:'#2A637D',
-        foreground:'#FFFFFF'
+      primary: {
+        background: "#2A637D",
+        foreground: "#FFFFFF",
       },
-      secondary:{
-        background:'#6FCF97',
-        foreground:'#FFFFFF'
+      secondary: {
+        background: "#6FCF97",
+        foreground: "#FFFFFF",
       },
-      tertiary:{
-        background:'#E5E5E5',
-        foreground:'#333333'
-      }
+      tertiary: {
+        background: "#E5E5E5",
+        foreground: "#333333",
+      },
     },
     text: {
       primary: "#333333",
@@ -169,17 +155,17 @@ export const COLORS: Color = {
     },
     button: {
       primary: {
-        background: '#1B4758',
-        foreground: '#FFFFFF'
+        background: "#1B4758",
+        foreground: "#FFFFFF",
       },
       secondary: {
-        background: '#519E73',
-        foreground: '#FFFFFF'
+        background: "#519E73",
+        foreground: "#FFFFFF",
       },
       tertiary: {
-        background: '#1A1A1A',
-        foreground: '#CCCCCC'
-      }
+        background: "#1A1A1A",
+        foreground: "#CCCCCC",
+      },
     },
     text: {
       primary: "#E5E5E5",
@@ -210,33 +196,4 @@ export const COLORS: Color = {
       foreground: "#000000",
     },
   },
-};
-
-export type Icon = {
-  ActionIcon: FC<SvgProps>;
-  CalendarIcon: FC<SvgProps>;
-  HomeIcon: FC<SvgProps>;
-  IncomeIcon: FC<SvgProps>;
-  ExpenseIcon: FC<SvgProps>;
-  SavingsIcon: FC<SvgProps>;
-  TransactionsIcon: FC<SvgProps>;
-  TransferIcon: FC<SvgProps>;
-  MenuIcon: FC<SvgProps>;
-  NotificationsIcon: FC<SvgProps>;
-  ShowIcon: FC<SvgProps>;
-  HideIcon: FC<SvgProps>;
-};
-export const ICONS: Icon = {
-  ActionIcon,
-  CalendarIcon,
-  HomeIcon,
-  IncomeIcon,
-  ExpenseIcon,
-  SavingsIcon,
-  TransactionsIcon,
-  TransferIcon,
-  MenuIcon,
-  NotificationsIcon,
-  ShowIcon,
-  HideIcon,
 };

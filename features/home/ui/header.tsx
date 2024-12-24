@@ -11,12 +11,13 @@ import {
 } from "react-native";
 import { useTranslation } from "react-i18next";
 
-import { Colors, ICONS } from "@/constants/theme";
+import { Colors } from "@/constants/theme";
 
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { useButtonFeedback } from "@/hooks/use-button-feedback";
 
 import { moneyParser } from "@/utils/money-parser";
+import { useIcon } from "@/hooks/use-icon";
 
 interface HomeHeaderProps {
   ballance: number;
@@ -26,7 +27,7 @@ export function HomeHeader({ ballance }: HomeHeaderProps) {
   const colorScheme = useThemeColor();
   const [showBallance, setShowBallance] = useState<boolean>(true);
   const ballanceIsPositive: boolean = ballance < 0 ? false : true;
-  const { NotificationsIcon, MenuIcon, ShowIcon, HideIcon } = ICONS;
+  const { NotificationsIcon, MenuIcon, ShowIcon, HideIcon } = useIcon();
   const {
     container,
     wrapper,
@@ -44,24 +45,24 @@ export function HomeHeader({ ballance }: HomeHeaderProps) {
   } = styles(colorScheme, ballanceIsPositive);
 
   const showBallanceHandler = useCallback(() => {
-    useButtonFeedback("medium")
+    useButtonFeedback("medium");
     setShowBallance((value: boolean) => !value);
   }, []);
 
   const showNotificationsHandler = useCallback(() => {
-    useButtonFeedback("medium")
+    useButtonFeedback("medium");
   }, []);
 
   const showMenuHandler = useCallback(() => {
-    useButtonFeedback("medium")
+    useButtonFeedback("medium");
   }, []);
 
   const showProfileHandler = useCallback(() => {
-    useButtonFeedback("medium")
+    useButtonFeedback("medium");
   }, []);
 
   const changeProfilePictureHandler = useCallback(() => {
-    useButtonFeedback("medium")
+    useButtonFeedback("medium");
   }, []);
 
   return (

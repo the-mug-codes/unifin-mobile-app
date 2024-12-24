@@ -3,13 +3,10 @@ import {
   View,
   Text,
   StyleSheet,
-  useColorScheme,
-  ColorSchemeName,
   TouchableOpacity,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { RectButton, Swipeable } from "react-native-gesture-handler";
-import Icon from "@expo/vector-icons/MaterialIcons";
 
 import { useButtonFeedback } from "@/hooks/use-button-feedback";
 
@@ -23,7 +20,9 @@ import {
 } from "@/model/transaction";
 import { TransactionList } from "@/model/core";
 
-import { COLORS } from "@/constants/theme";
+import { Colors } from "@/constants/theme";
+import { useIcon } from "@/hooks/use-icon";
+import { useThemeColor } from "@/hooks/use-theme-color";
 
 interface TransactionListItem {
   transaction: TransactionList;
@@ -35,9 +34,10 @@ export function TransactionListItem({
   onDelete,
   onEdit,
 }: TransactionListItem) {
-  const colorScheme = useColorScheme();
+  const colorScheme = useThemeColor();
   const { push } = useRouter();
   const { variant } = item;
+  const { EditIcon, DeleteIcon, CancelIcon, ConfirmIcon } = useIcon();
   const {
     container,
     dateTitleBallanceContainer,
@@ -75,20 +75,28 @@ export function TransactionListItem({
       <RectButton
         style={[actionButton, deleteButton]}
         onPress={() => {
-          useButtonFeedback("heavy")
+          useButtonFeedback("heavy");
           onDelete(id);
         }}
       >
-        <Icon name="delete" size={24} style={deleteButtonIcon} />
+        <DeleteIcon
+          width={24}
+          height={24}
+          fill={deleteButtonIcon.color}
+        />
       </RectButton>
       <RectButton
         style={[actionButton, editButton]}
         onPress={() => {
-          useButtonFeedback("heavy")
+          useButtonFeedback("heavy");
           onEdit(id);
         }}
       >
-        <Icon name="edit" size={24} style={editButtonIcon} />
+        <EditIcon
+          width={24}
+          height={24}
+          fill={editButtonIcon.color}
+        />
       </RectButton>
     </>
   );
@@ -97,15 +105,23 @@ export function TransactionListItem({
     <RectButton
       style={[actionButton, reconciled ? reconciledButton : unreconciledButton]}
       onPress={() => {
-        useButtonFeedback("heavy")
+        useButtonFeedback("heavy");
         onEdit(id);
       }}
     >
-      <Icon
-        name={reconciled ? "close" : "done"}
-        size={24}
-        style={reconciled ? reconciledButtonIcon : unreconciledButtonIcon}
-      />
+      {reconciled ? (
+        <CancelIcon
+          width={24}
+          height={24}
+          fill={reconciledButtonIcon.color}
+        />
+      ) : (
+        <ConfirmIcon
+          width={24}
+          height={24}
+          fill={unreconciledButtonIcon.color}
+        />
+      )}
     </RectButton>
   );
 
@@ -165,7 +181,7 @@ export function TransactionListItem({
     }
   };
 
-  const openDetailsHandler = (id: string) => push(`/(main)/transactions/${id}`);
+  const openDetailsHandler = (id: string) => push(`/transactions/${id}`);
 
   const transaction = ({
     id,
@@ -194,15 +210,21 @@ export function TransactionListItem({
           <View style={transactionRight}>
             {getAmount(kind, amount)}
             <View style={transactionStatusContainer}>
-              <Icon
-                name={!!reconciledAt ? "check-circle" : "cancel"}
-                size={12}
-                style={
-                  !!reconciledAt
-                    ? transactionSubtitleGreen
-                    : transactionSubtitleRed
-                }
-              />
+              {!!reconciledAt ? (
+                <CancelIcon
+                  width={12}
+                  height={12}
+                  style={transactionSubtitleRed}
+                  fill={transactionSubtitleRed.color}
+                />
+              ) : (
+                <ConfirmIcon
+                  width={12}
+                  height={12}
+                  style={transactionSubtitleGreen}
+                  fill={transactionSubtitleGreen.color}
+                />
+              )}
               <Text style={transactionSubtitle}>
                 {getStatus(kind, reconciledAt)}
               </Text>
@@ -223,7 +245,7 @@ export function TransactionListItem({
   }
 }
 
-const transactionItemStyles = (colorScheme: ColorSchemeName) =>
+const transactionItemStyles = (colorScheme: Colors) =>
   StyleSheet.create({
     container: {
       marginHorizontal: 10,
@@ -233,15 +255,15 @@ const transactionItemStyles = (colorScheme: ColorSchemeName) =>
       margin: 0,
       flexDirection: "row",
       alignItems: "center",
-      backgroundColor: COLORS[colorScheme ?? "light"].background.primary,
+      backgroundColor: colorScheme.background.primary,
       paddingHorizontal: 12,
-      borderBottomColor: COLORS[colorScheme ?? "light"].border.primary,
+      borderBottomColor: colorScheme.border.primary,
       borderBottomWidth: 1,
     },
     dateTitle: {
       flex: 1,
       fontFamily: "Poppins-Regular",
-      color: COLORS[colorScheme ?? "light"].text.secondary,
+      color: colorScheme.text.secondary,
       fontSize: 16,
     },
     ballanceWrapper: {
@@ -257,16 +279,16 @@ const transactionItemStyles = (colorScheme: ColorSchemeName) =>
       fontSize: 14,
     },
     ballanceAmountGreen: {
-      color: COLORS[colorScheme ?? "light"].green.primary,
+      color: colorScheme.green.primary,
     },
     ballanceAmountRed: {
-      color: COLORS[colorScheme ?? "light"].red.primary,
+      color: colorScheme.red.primary,
     },
     ballanceGreen: {
-      backgroundColor: COLORS[colorScheme ?? "light"].green.secondary,
+      backgroundColor: colorScheme.green.secondary,
     },
     ballanceRed: {
-      backgroundColor: COLORS[colorScheme ?? "light"].red.secondary,
+      backgroundColor: colorScheme.red.secondary,
     },
     transactionWrapper: {
       borderRadius: 6,
@@ -274,7 +296,7 @@ const transactionItemStyles = (colorScheme: ColorSchemeName) =>
     },
     transactionContainer: {
       padding: 12,
-      backgroundColor: COLORS[colorScheme ?? "light"].background.primary,
+      backgroundColor: colorScheme.background.primary,
       flexDirection: "row",
     },
     transactionDetails: {
@@ -294,10 +316,10 @@ const transactionItemStyles = (colorScheme: ColorSchemeName) =>
       fontSize: 20,
     },
     transactionAmountIncome: {
-      color: COLORS[colorScheme ?? "light"].green.primary,
+      color: colorScheme.green.primary,
     },
     transactionAmountExpense: {
-      color: COLORS[colorScheme ?? "light"].red.primary,
+      color: colorScheme.red.primary,
     },
     transactionStatusContainer: {
       flexDirection: "row",
@@ -306,14 +328,14 @@ const transactionItemStyles = (colorScheme: ColorSchemeName) =>
     transactionSubtitle: {
       fontSize: 12,
       fontFamily: "Lato-Regular",
-      color: COLORS[colorScheme ?? "light"].text.secondary,
+      color: colorScheme.text.secondary,
     },
     transactionSubtitleGreen: {
-      color: COLORS[colorScheme ?? "light"].green.primary,
+      color: colorScheme.green.primary,
       marginRight: 2,
     },
     transactionSubtitleRed: {
-      color: COLORS[colorScheme ?? "light"].red.primary,
+      color: colorScheme.red.primary,
       marginRight: 2,
     },
     actionButton: {
@@ -323,27 +345,27 @@ const transactionItemStyles = (colorScheme: ColorSchemeName) =>
       height: "100%",
     },
     deleteButton: {
-      backgroundColor: COLORS[colorScheme ?? "light"].red.secondary,
+      backgroundColor: colorScheme.red.secondary,
     },
     editButton: {
-      backgroundColor: COLORS[colorScheme ?? "light"].border.primary,
+      backgroundColor: colorScheme.border.primary,
     },
     deleteButtonIcon: {
-      color: COLORS[colorScheme ?? "light"].red.primary,
+      color: colorScheme.red.primary,
     },
     editButtonIcon: {
-      color: COLORS[colorScheme ?? "light"].text.primary,
+      color: colorScheme.text.primary,
     },
     reconciledButton: {
-      backgroundColor: COLORS[colorScheme ?? "light"].red.secondary,
+      backgroundColor: colorScheme.red.secondary,
     },
     unreconciledButton: {
-      backgroundColor: COLORS[colorScheme ?? "light"].green.secondary,
+      backgroundColor: colorScheme.green.secondary,
     },
     reconciledButtonIcon: {
-      color: COLORS[colorScheme ?? "light"].red.primary,
+      color: colorScheme.red.primary,
     },
     unreconciledButtonIcon: {
-      color: COLORS[colorScheme ?? "light"].green.primary,
+      color: colorScheme.green.primary,
     },
   });
