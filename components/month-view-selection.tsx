@@ -1,17 +1,12 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  useColorScheme,
-  ColorSchemeName,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import Icon from "@expo/vector-icons/MaterialIcons";
-import * as Haptics from "expo-haptics";
 
-import { MONTHS } from "@/constants/date-time";
-import { COLORS } from "@/constants/theme";
+import { useButtonFeedback } from "@/hooks/use-button-feedback";
+import { useThemeColor } from "@/hooks/use-theme-color";
+
+import { Colors } from "@/constants/theme";
+import { getMonths } from "@/utils/date-parser";
 
 interface MonthViewSelectionProps {
   selectedDate: (newDate: Date) => void;
@@ -19,7 +14,7 @@ interface MonthViewSelectionProps {
 export function MonthViewSelection({ selectedDate }: MonthViewSelectionProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
-  const colorScheme = useColorScheme();
+  const colorScheme = useThemeColor();
 
   const { container, info, monthText, yearText, navigator, icon } =
     styles(colorScheme);
@@ -32,7 +27,7 @@ export function MonthViewSelection({ selectedDate }: MonthViewSelectionProps) {
       setCurrentMonth((prev: number) => prev + 1);
     }
     if (process.env.EXPO_OS === "ios") {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+      useButtonFeedback("medium");
     }
   };
 
@@ -44,7 +39,7 @@ export function MonthViewSelection({ selectedDate }: MonthViewSelectionProps) {
       setCurrentMonth((prev: number) => prev - 1);
     }
     if (process.env.EXPO_OS === "ios") {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+      useButtonFeedback("medium");
     }
   };
 
@@ -54,8 +49,8 @@ export function MonthViewSelection({ selectedDate }: MonthViewSelectionProps) {
         <Icon name="chevron-left" size={32} style={icon} />
       </TouchableOpacity>
       <View style={info}>
-        <Text style={monthText}>{MONTHS[currentMonth]}</Text>
-        {MONTHS[currentMonth]}
+        <Text style={monthText}>{getMonths()[currentMonth]}</Text>
+        {getMonths()[currentMonth]}
         {currentYear != new Date().getFullYear() && (
           <Text style={yearText}>{currentYear}</Text>
         )}
@@ -67,35 +62,35 @@ export function MonthViewSelection({ selectedDate }: MonthViewSelectionProps) {
   );
 }
 
-const styles = (colorScheme: ColorSchemeName) =>
+const styles = (colorScheme: Colors) =>
   StyleSheet.create({
     container: {
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "center",
-      borderBottomColor: COLORS[colorScheme ?? "light"].border.primary,
+      borderBottomColor: colorScheme.border.primary,
       borderBottomWidth: 1,
-      backgroundColor: COLORS[colorScheme ?? "light"].background.primary,
+      backgroundColor: colorScheme.background.primary,
     },
     navigator: {
       paddingVertical: 18,
       paddingHorizontal: 12,
     },
     icon: {
-      color: COLORS[colorScheme ?? "light"].brand.secondary,
+      color: colorScheme.brand.secondary,
     },
     info: {
       flex: 1,
     },
     monthText: {
       fontFamily: "Poppins-Medium",
-      color: COLORS[colorScheme ?? "light"].text.primary,
+      color: colorScheme.text.primary,
       textAlign: "center",
       fontSize: 18,
     },
     yearText: {
       fontFamily: "Poppins-Regular",
-      color: COLORS[colorScheme ?? "light"].text.primary,
+      color: colorScheme.text.primary,
       textAlign: "center",
       fontSize: 12,
       marginTop: -2.5,

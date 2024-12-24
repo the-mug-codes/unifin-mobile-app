@@ -1,27 +1,21 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  useColorScheme,
-  ColorSchemeName,
-} from "react-native";
+import { View, Text, StyleSheet } from "react-native";
+import { useTranslation } from "react-i18next";
+
+import { useThemeColor } from "@/hooks/use-theme-color";
+
+import { Colors } from "@/constants/theme";
 
 import { moneyParser } from "@/utils/money-parser";
 
-import { COLORS } from "@/constants/theme";
-
-interface TransactionListHeaderProps {
+interface HeaderProps {
   ballance: number;
   futureBallance: number;
 }
-export function TransactionListHeader({
-  ballance,
-  futureBallance,
-}: TransactionListHeaderProps) {
-  const colorScheme = useColorScheme();
-  const ballancePositive: boolean = ballance < 0 ? false : true;
-  const futureBallancePositive: boolean = ballance < 0 ? false : true;
+export function Header({ ballance, futureBallance }: HeaderProps) {
+  const { t } = useTranslation();
+  const colorScheme = useThemeColor();
+  const isPositive: boolean = ballance < 0 ? false : true;
 
   const {
     container,
@@ -31,16 +25,16 @@ export function TransactionListHeader({
     ballanceTitle,
     futureTitle,
     futureBallanceAmount,
-    ballanceWrapper
-  } = styles(colorScheme, ballancePositive, futureBallancePositive);
+    ballanceWrapper,
+  } = styles(colorScheme, isPositive);
 
   return (
     <View style={container}>
       <View style={wrapper}>
         <View style={ballanceContainer}>
           <View>
-            <Text style={ballanceTitle}>Saldo atual</Text>
-            <Text style={futureTitle}>Saldo previsto</Text>
+            <Text style={ballanceTitle}>{t("currentBallance")}</Text>
+            <Text style={futureTitle}>{t("futureBallance")}</Text>
           </View>
           <View style={ballanceWrapper}>
             <Text style={ballanceAmount}>{moneyParser(ballance)}</Text>
@@ -54,11 +48,7 @@ export function TransactionListHeader({
   );
 }
 
-const styles = (
-  colorScheme: ColorSchemeName,
-  balancePositive: boolean,
-  futureBalancePositive: boolean
-) =>
+const styles = (colorScheme: Colors, isPositive: boolean) =>
   StyleSheet.create({
     container: {
       marginHorizontal: 10,
@@ -68,35 +58,35 @@ const styles = (
     wrapper: {
       borderRadius: 6,
       padding: 12,
-      backgroundColor: COLORS[colorScheme ?? "light"].background.secondary,
+      backgroundColor: colorScheme.background.secondary,
       overflow: "hidden",
     },
     ballanceContainer: {
       flexDirection: "row",
       alignItems: "center",
     },
-    ballanceWrapper :{
+    ballanceWrapper: {
       flex: 1,
     },
     ballanceTitle: {
       fontFamily: "Poppins-SemiBold",
-      color: COLORS[colorScheme ?? "light"].text.primary,
+      color: colorScheme.text.primary,
       fontSize: 18,
     },
     ballanceAmount: {
       fontFamily: "Nunito-ExtraBold",
-      color: balancePositive ? COLORS[colorScheme ?? "light"].green.primary : COLORS[colorScheme ?? "light"].red.primary,
+      color: isPositive ? colorScheme.green.primary : colorScheme.red.primary,
       textAlign: "right",
       fontSize: 24,
     },
     futureTitle: {
       fontFamily: "Lato-Regular",
-      color: COLORS[colorScheme ?? "light"].text.secondary,
+      color: colorScheme.text.secondary,
       fontSize: 14,
     },
     futureBallanceAmount: {
       fontFamily: "Nunito-ExtraBold",
-      color: COLORS[colorScheme ?? "light"].text.secondary,
+      color: colorScheme.text.secondary,
       textAlign: "right",
     },
   });

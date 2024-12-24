@@ -6,15 +6,17 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from "react-native";
-import { StatusBar } from "expo-status-bar";
-import Icon from "@expo/vector-icons/MaterialIcons";
+import { useTranslation } from "react-i18next";
 
 import { useThemeColor } from "@/hooks/use-theme-color";
+import { useIcon } from "@/hooks/use-icon";
 
 import { Colors } from "@/constants/theme";
 
-interface TransactionHeaderProps {}
-export function TransactionHeader({}: TransactionHeaderProps) {
+interface HeaderProps {}
+export function Header({}: HeaderProps) {
+  const { t } = useTranslation();
+  const { SearchIcon, MenuIcon } = useIcon();
   const colorScheme = useThemeColor();
   const { container, wrapper, actionArea, icon, title } = styles(colorScheme);
 
@@ -22,16 +24,15 @@ export function TransactionHeader({}: TransactionHeaderProps) {
     <View style={container}>
       <SafeAreaView style={wrapper}>
         <View style={actionArea}>
-          <Text style={title}>Fluxo de Caixa</Text>
+          <Text style={title}>{t("cashFlow")}</Text>
           <TouchableOpacity>
-            <Icon name="search" size={24} style={icon} />
+            <SearchIcon width={24} height={24} style={icon} fill={icon.color} />
           </TouchableOpacity>
           <TouchableOpacity>
-            <Icon name="more-vert" size={24} style={icon} />
+            <MenuIcon width={24} height={24} style={icon} fill={icon.color} />
           </TouchableOpacity>
         </View>
       </SafeAreaView>
-      <StatusBar style="light" />
     </View>
   );
 }
@@ -55,12 +56,12 @@ const styles = (colorScheme: Colors) =>
     title: {
       flex: 1,
       fontFamily: "Poppins-SemiBold",
-      color: colorScheme.background.secondary,
+      color: colorScheme.text.invert,
       fontSize: 18,
       marginLeft: 8,
     },
     icon: {
-      color: colorScheme.background.secondary,
-      paddingHorizontal: 8,
+      color: colorScheme.brand.secondary,
+      marginHorizontal: 8,
     },
   });

@@ -1,11 +1,16 @@
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { StyleSheet, View, Text, Switch, TextInput } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { getLocales } from "expo-localization";
+import { useTranslation } from "react-i18next";
+
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 
 import { useThemeColor } from "@/hooks/use-theme-color";
+
+import { formatDate } from "@/utils/date-parser";
 
 import { Colors } from "@/constants/theme";
 
@@ -17,6 +22,7 @@ interface FormProps {
   onSubmit: (value: any) => void;
 }
 function Form({ onSubmit }: FormProps, ref: React.Ref<FormRef>) {
+  const { t } = useTranslation();
   const [isDatePickerVisible, setDatePickerVisibility] =
     useState<boolean>(false);
   const colorScheme = useThemeColor();
@@ -86,24 +92,19 @@ function Form({ onSubmit }: FormProps, ref: React.Ref<FormRef>) {
           <Controller
             control={control}
             name="date"
-            render={({ field: { onChange, value } }) => (
-              <TextInput
+            render={({ field: { value } }) => (
+              <Text
                 style={[input, errors.date && errorBackground]}
-                textAlignVertical="center"
-                placeholder="hoje"
-                placeholderTextColor={
-                  errors.date ? error.color : colorScheme.text.secondary
-                }
-                onFocus={showHideDatePickerHandler}
-                value={value}
-                onChangeText={onChange}
-              />
+                onPress={showHideDatePickerHandler}
+              >
+                {formatDate(new Date(value), true)}
+              </Text>
             )}
           />
           <DateTimePickerModal
             isVisible={isDatePickerVisible}
-            locale="pt-br"
-            mode="datetime"
+            locale={getLocales()[0].languageTag}
+            mode="date"
             confirmTextIOS="Selecionar"
             cancelTextIOS="Cancelar"
             onConfirm={(date) => {
@@ -122,6 +123,7 @@ function Form({ onSubmit }: FormProps, ref: React.Ref<FormRef>) {
                 style={{ marginBottom: 20 }}
                 value={value}
                 onValueChange={onChange}
+                trackColor={{ true: colorScheme.brand.primary }}
               />
             )}
           />
@@ -272,7 +274,7 @@ const stylesForm = (colorScheme: Colors) =>
       fontFamily: "Poppins-SemiBold",
       color: colorScheme.red.primary,
       fontSize: 12,
-      marginBottom:6
+      marginBottom: 6,
     },
     errorBackground: {
       color: colorScheme.red.primary,

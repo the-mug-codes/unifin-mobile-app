@@ -1,13 +1,11 @@
 import React, { ReactNode } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
 import { RectButton, Swipeable } from "react-native-gesture-handler";
+import { useTranslation } from "react-i18next";
 
+import { useIcon } from "@/hooks/use-icon";
+import { useThemeColor } from "@/hooks/use-theme-color";
 import { useButtonFeedback } from "@/hooks/use-button-feedback";
 
 import { moneyParser } from "@/utils/money-parser";
@@ -21,23 +19,25 @@ import {
 import { TransactionList } from "@/model/core";
 
 import { Colors } from "@/constants/theme";
-import { useIcon } from "@/hooks/use-icon";
-import { useThemeColor } from "@/hooks/use-theme-color";
 
-interface TransactionListItem {
+interface ItemProps {
   transaction: TransactionList;
   onDelete: (id: string) => void;
   onEdit: (id: string) => void;
 }
-export function TransactionListItem({
-  transaction: item,
-  onDelete,
-  onEdit,
-}: TransactionListItem) {
+export function Item({ transaction: item, onDelete, onEdit }: ItemProps) {
   const colorScheme = useThemeColor();
+  const { t } = useTranslation();
   const { push } = useRouter();
   const { variant } = item;
-  const { EditIcon, DeleteIcon, CancelIcon, ConfirmIcon } = useIcon();
+  const {
+    EditIcon,
+    DeleteIcon,
+    CancelIcon,
+    ConfirmIcon,
+    ConfirmFillIcon,
+    CancelFillIcon,
+  } = useIcon();
   const {
     container,
     dateTitleBallanceContainer,
@@ -69,7 +69,7 @@ export function TransactionListItem({
     ballanceAmountRed,
     ballanceGreen,
     ballanceRed,
-  } = transactionItemStyles(colorScheme);
+  } = styles(colorScheme);
   const slideLeftActions = (id: string) => (
     <>
       <RectButton
@@ -79,11 +79,7 @@ export function TransactionListItem({
           onDelete(id);
         }}
       >
-        <DeleteIcon
-          width={24}
-          height={24}
-          fill={deleteButtonIcon.color}
-        />
+        <DeleteIcon width={24} height={24} fill={deleteButtonIcon.color} />
       </RectButton>
       <RectButton
         style={[actionButton, editButton]}
@@ -92,11 +88,7 @@ export function TransactionListItem({
           onEdit(id);
         }}
       >
-        <EditIcon
-          width={24}
-          height={24}
-          fill={editButtonIcon.color}
-        />
+        <EditIcon width={24} height={24} fill={editButtonIcon.color} />
       </RectButton>
     </>
   );
@@ -110,11 +102,7 @@ export function TransactionListItem({
       }}
     >
       {reconciled ? (
-        <CancelIcon
-          width={24}
-          height={24}
-          fill={reconciledButtonIcon.color}
-        />
+        <CancelIcon width={24} height={24} fill={reconciledButtonIcon.color} />
       ) : (
         <ConfirmIcon
           width={24}
@@ -131,7 +119,7 @@ export function TransactionListItem({
       amount >= 0 ? ballanceAmountGreen : ballanceAmountRed;
     return (
       <View style={[dateTitleBallanceContainer]}>
-        <Text style={dateTitle}>{`dia ${formatDate(date)}`}</Text>
+        <Text style={dateTitle}>{`${t("day")} ${formatDate(date)}`}</Text>
         <View style={[ballanceWrapper, ballanceColor]}>
           <Text style={[ballanceAmount, ballanceAmountColor]}>
             {moneyParser(amount)}
@@ -144,23 +132,23 @@ export function TransactionListItem({
     var action: string;
     switch (kind) {
       case "expense":
-        action = "pago";
+        action = t("paid");
         break;
       case "income":
-        action = "recebido";
+        action = t("received");
         break;
       case "transfer":
-        action = "transferido";
+        action = t("transferred");
         break;
     }
     if (!reconciledAt) {
-      return `não ${action}`;
+      return `${t("not")} ${action}`;
     }
     return action;
   };
 
   const getCategory = (category?: TransactionCategory): string =>
-    category ? category.name.toLowerCase() : "sem categoria";
+    category ? category.name.toLowerCase() : t("no category");
 
   const getAmount = (kind: TransactionKind, amount: number): ReactNode => {
     switch (kind) {
@@ -211,14 +199,14 @@ export function TransactionListItem({
             {getAmount(kind, amount)}
             <View style={transactionStatusContainer}>
               {!!reconciledAt ? (
-                <CancelIcon
+                <CancelFillIcon
                   width={12}
                   height={12}
                   style={transactionSubtitleRed}
                   fill={transactionSubtitleRed.color}
                 />
               ) : (
-                <ConfirmIcon
+                <ConfirmFillIcon
                   width={12}
                   height={12}
                   style={transactionSubtitleGreen}
@@ -245,7 +233,7 @@ export function TransactionListItem({
   }
 }
 
-const transactionItemStyles = (colorScheme: Colors) =>
+const styles = (colorScheme: Colors) =>
   StyleSheet.create({
     container: {
       marginHorizontal: 10,

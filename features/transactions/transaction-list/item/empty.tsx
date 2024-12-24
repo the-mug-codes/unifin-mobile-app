@@ -1,6 +1,6 @@
 import React from "react";
 import { Text } from "react-native";
 
-export function TransactionListEmpty() {
+export function Empty() {
   return <Text>Total</Text>;
 }

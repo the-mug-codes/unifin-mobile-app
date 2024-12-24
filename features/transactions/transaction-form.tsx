@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import Toast from "react-native-toast-message";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/button";
 
@@ -24,6 +25,7 @@ interface TransactionFormProps {
   kind: TransactionKind;
 }
 export default function TransactionForm({ kind }: TransactionFormProps) {
+    const { t } = useTranslation();
   const { back } = useRouter();
   const colorScheme = useColorScheme();
   const { container, formContainer, footer } = styles(colorScheme);

@@ -1,6 +1,7 @@
 import { useState } from "react";
 
-import { TransactionList } from "@/features/transactions/transaction-list";
+import { TransactionList } from "@/features/transactions/transaction-list/transaction-list";
+
 import { TransactionList as TransactionListItem } from "@/model/core";
 
 const DATA: TransactionListItem[] = [

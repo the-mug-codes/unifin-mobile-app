@@ -1,11 +1,12 @@
 import React from "react";
 import { FlashList } from "@shopify/flash-list";
 
-import { TransactionHeader } from "@/features/transactions/transaction-list/transaction-header";
-import { TransactionListItem } from "@/features/transactions/transaction-list/transaction-list-item";
-import { TransactionListFooter } from "@/features/transactions/transaction-list/transaction-list-footer";
-import { TransactionListHeader } from "@/features/transactions/transaction-list/transaction-list-header";
-import { TransactionListEmpty } from "@/features/transactions/transaction-list/transaction-list-empty";
+import { Header } from "@/features/transactions/transaction-list/ui/header";
+
+import { Item } from "@/features/transactions/transaction-list/item/item";
+import { Footer as ListFooter } from "@/features/transactions/transaction-list/item/footer";
+import { Header as ListHeader } from "@/features/transactions/transaction-list/item/header";
+import { Empty as ListEmpty } from "@/features/transactions/transaction-list/item/empty";
 
 import { MonthViewSelection } from "@/components/month-view-selection";
 
@@ -35,24 +36,24 @@ export function TransactionList({
 
   return (
     <>
-      <TransactionHeader />
+      <Header />
       <MonthViewSelection selectedDate={console.log} />
       <FlashList
         data={transactions}
         stickyHeaderIndices={dateIDs}
         renderItem={({ item }) => (
-          <TransactionListItem
+          <Item
             transaction={item}
             onDelete={onDeletePress}
             onEdit={onEditPress}
           />
         )}
-        ListEmptyComponent={TransactionListEmpty}
-        ListHeaderComponent={TransactionListHeader({
+        ListEmptyComponent={ListEmpty}
+        ListHeaderComponent={ListHeader({
           ballance,
           futureBallance,
         })}
-        ListFooterComponent={TransactionListFooter({
+        ListFooterComponent={ListFooter({
           finalBallance: ballance,
           income: 100,
           outcome: 300,

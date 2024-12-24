@@ -2,27 +2,29 @@ import React from "react";
 import {
   View,
   Text,
-  StyleSheet,
-  useColorScheme,
-  ColorSchemeName,
+  StyleSheet
 } from "react-native";
+import { useTranslation } from "react-i18next";
 
-import { COLORS } from "@/constants/theme";
+import { useThemeColor } from "@/hooks/use-theme-color";
+
+import { Colors } from "@/constants/theme";
+
 import { moneyParser } from "@/utils/money-parser";
 
-interface TransactionListFooterProps {
+interface FooterProps {
   finalBallance: number;
   income: number;
   outcome: number;
 }
-export function TransactionListFooter({
+export function Footer({
   finalBallance,
   income,
   outcome,
-}: TransactionListFooterProps) {
+}: FooterProps) {
   const ballancePositive: boolean = finalBallance < 0 ? false : true;
-
-  const colorScheme = useColorScheme();
+  const { t } = useTranslation();
+  const colorScheme = useThemeColor();
   const {
     container,
     wrapper,
@@ -40,20 +42,20 @@ export function TransactionListFooter({
       <View style={wrapper}>
         <View>
           <View>
-            <Text style={transactionsTitle}>Receitas</Text>
+            <Text style={transactionsTitle}>{t("income")}</Text>
             <Text style={[transactionsAmount, transactionsAmountIncome]}>
               {moneyParser(income)}
             </Text>
           </View>
           <View>
-            <Text style={transactionsTitle}>Despesas</Text>
+            <Text style={transactionsTitle}>{t("expense")}</Text>
             <Text style={[transactionsAmount, transactionsAmountOutcome]}>
               {moneyParser(outcome)}
             </Text>
           </View>
         </View>
         <View style={ballanceContainer}>
-          <Text style={ballanceTitle}>Saldo Final</Text>
+          <Text style={ballanceTitle}>{t("finalBalance")}</Text>
           <Text style={ballanceAmount}> {moneyParser(finalBallance)}</Text>
         </View>
       </View>
@@ -61,7 +63,7 @@ export function TransactionListFooter({
   );
 }
 
-const styles = (colorScheme: ColorSchemeName, balancePositive: boolean) =>
+const styles = (colorScheme: Colors, balancePositive: boolean) =>
   StyleSheet.create({
     container: {
       marginHorizontal: 10,
@@ -70,7 +72,7 @@ const styles = (colorScheme: ColorSchemeName, balancePositive: boolean) =>
     wrapper: {
       borderRadius: 6,
       padding: 12,
-      backgroundColor: COLORS[colorScheme ?? "light"].background.secondary,
+      backgroundColor: colorScheme.background.secondary,
       overflow: "hidden",
       flexDirection: "row",
     },
@@ -80,21 +82,21 @@ const styles = (colorScheme: ColorSchemeName, balancePositive: boolean) =>
     },
     ballanceTitle: {
       fontFamily: "Poppins-SemiBold",
-      color: COLORS[colorScheme ?? "light"].text.primary,
+      color: colorScheme.text.primary,
       textAlign: "right",
       fontSize: 18,
     },
     ballanceAmount: {
       fontFamily: "Nunito-ExtraBold",
       color: balancePositive
-        ? COLORS[colorScheme ?? "light"].green.primary
-        : COLORS[colorScheme ?? "light"].red.primary,
+        ? colorScheme.green.primary
+        : colorScheme.red.primary,
       textAlign: "right",
       fontSize: 24,
     },
     transactionsTitle: {
       fontFamily: "Lato-Regular",
-      color: COLORS[colorScheme ?? "light"].text.secondary,
+      color: colorScheme.text.secondary,
       fontSize: 14,
     },
     transactionsAmount: {
@@ -102,9 +104,9 @@ const styles = (colorScheme: ColorSchemeName, balancePositive: boolean) =>
       fontSize: 12,
     },
     transactionsAmountIncome: {
-      color: COLORS[colorScheme ?? "light"].green.primary,
+      color: colorScheme.green.primary,
     },
     transactionsAmountOutcome: {
-      color: COLORS[colorScheme ?? "light"].red.primary,
+      color: colorScheme.red.primary,
     },
   });
