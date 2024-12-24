@@ -1,29 +1,21 @@
-import React, { FC, RefObject, useRef } from "react";
+import React from "react";
 import {
   StyleSheet,
   View,
   ColorSchemeName,
   SafeAreaView,
   TouchableOpacity,
-  GestureResponderEvent,
   Text,
   useColorScheme,
   StyleProp,
   ViewStyle,
 } from "react-native";
-import {
-  BottomSheetModal,
-  BottomSheetView,
-  BottomSheetModalProvider,
-} from "@gorhom/bottom-sheet";
-import { Href, useRouter, usePathname } from "expo-router";
-import { SvgProps } from "react-native-svg";
-import * as Haptics from "expo-haptics";
+import { useRouter } from "expo-router";
+import { ScrollView } from "react-native-gesture-handler";
 
-import { COLORS, ICONS } from "@/constants/theme";
+import { COLORS } from "@/constants/theme";
 
 import { TransactionKind } from "@/model/transaction";
-import { ScrollView } from "react-native-gesture-handler";
 interface TransactionDetailsProps {
   id: string;
 }
@@ -57,7 +49,7 @@ export default function TransactionDetails({ id }: TransactionDetailsProps) {
     }
   };
 
-  const editHandler = () => replace(`/transactions/edit/${id}`)
+  const editHandler = () => replace(`/transactions/edit/${id}`);
 
   const cancelHandler = () => back();
 

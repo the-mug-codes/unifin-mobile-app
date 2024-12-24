@@ -4,7 +4,7 @@ import { TransactionList } from "@/features/transactions/transaction-list";
 import { TransactionList as TransactionListItem } from "@/model/core";
 
 const DATA: TransactionListItem[] = [
-  { id: 1, variant: "section", date: new Date() , amount: 1222 },
+  { id: 1, variant: "section", date: new Date(), amount: 1222 },
   {
     id: 2,
     variant: "transaction",

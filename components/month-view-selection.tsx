@@ -82,7 +82,7 @@ const styles = (colorScheme: ColorSchemeName) =>
       paddingHorizontal: 12,
     },
     icon: {
-      color: COLORS[colorScheme ?? "light"].brand.primary,
+      color: COLORS[colorScheme ?? "light"].brand.secondary,
     },
     info: {
       flex: 1,

@@ -1,7 +1,6 @@
 import React from "react";
-import {Text} from 'react-native'
+import { Text } from "react-native";
 
 export default function HomeScreen() {
-
-  return <Text>Savings</Text>;
+  return <Text>calendar</Text>;
 }

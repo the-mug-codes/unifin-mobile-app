@@ -2,17 +2,19 @@ import React, { ReactNode } from "react";
 import {
   View,
   Text,
-  Image,
   StyleSheet,
   useColorScheme,
   ColorSchemeName,
   TouchableOpacity,
 } from "react-native";
+import { useRouter } from "expo-router";
 import { RectButton, Swipeable } from "react-native-gesture-handler";
 import Icon from "@expo/vector-icons/MaterialIcons";
-import * as Haptics from "expo-haptics";
 
-import { COLORS } from "@/constants/theme";
+import { useButtonFeedback } from "@/hooks/use-button-feedback";
+
+import { moneyParser } from "@/utils/money-parser";
+import { formatDate } from "@/utils/date-parser";
 
 import {
   Transaction,
@@ -21,9 +23,7 @@ import {
 } from "@/model/transaction";
 import { TransactionList } from "@/model/core";
 
-import { moneyParser } from "@/utils/money-parser";
-import { formatDate } from "@/utils/date-parser";
-import { useRouter } from "expo-router";
+import { COLORS } from "@/constants/theme";
 
 interface TransactionListItem {
   transaction: TransactionList;
@@ -75,9 +75,7 @@ export function TransactionListItem({
       <RectButton
         style={[actionButton, deleteButton]}
         onPress={() => {
-          if (process.env.EXPO_OS === "ios") {
-            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-          }
+          useButtonFeedback("heavy")
           onDelete(id);
         }}
       >
@@ -86,9 +84,7 @@ export function TransactionListItem({
       <RectButton
         style={[actionButton, editButton]}
         onPress={() => {
-          if (process.env.EXPO_OS === "ios") {
-            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-          }
+          useButtonFeedback("heavy")
           onEdit(id);
         }}
       >
@@ -101,9 +97,7 @@ export function TransactionListItem({
     <RectButton
       style={[actionButton, reconciled ? reconciledButton : unreconciledButton]}
       onPress={() => {
-        if (process.env.EXPO_OS === "ios") {
-          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-        }
+        useButtonFeedback("heavy")
         onEdit(id);
       }}
     >
@@ -171,8 +165,7 @@ export function TransactionListItem({
     }
   };
 
-  const openDetailsHandler = (id: string) =>
-    push(`/(main)/transactions/${id}`);
+  const openDetailsHandler = (id: string) => push(`/(main)/transactions/${id}`);
 
   const transaction = ({
     id,
@@ -188,7 +181,7 @@ export function TransactionListItem({
         renderRightActions={() => slideRightActions(id, !!reconciledAt)}
       >
         <TouchableOpacity
-        activeOpacity={0.7}
+          activeOpacity={0.7}
           style={transactionContainer}
           onLongPress={() => openDetailsHandler(id)}
         >

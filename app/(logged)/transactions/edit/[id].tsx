@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from "expo-router";
 
 import TransactionForm from "@/features/transactions/transaction-form";
 

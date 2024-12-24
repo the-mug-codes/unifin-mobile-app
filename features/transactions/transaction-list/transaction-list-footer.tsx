@@ -86,7 +86,9 @@ const styles = (colorScheme: ColorSchemeName, balancePositive: boolean) =>
     },
     ballanceAmount: {
       fontFamily: "Nunito-ExtraBold",
-      color: balancePositive ? COLORS[colorScheme ?? "light"].green.primary : COLORS[colorScheme ?? "light"].red.primary,
+      color: balancePositive
+        ? COLORS[colorScheme ?? "light"].green.primary
+        : COLORS[colorScheme ?? "light"].red.primary,
       textAlign: "right",
       fontSize: 24,
     },

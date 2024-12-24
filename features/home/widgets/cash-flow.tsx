@@ -1,14 +1,12 @@
 import React from "react";
-import { StyleSheet, View, ColorSchemeName, Text } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { CartesianChart, Bar } from "victory-native";
-import Icon from "@expo/vector-icons/MaterialIcons";
-import * as Haptics from "expo-haptics";
 
-import { COLORS } from "@/constants/theme";
+import { useThemeColor } from "@/hooks/use-theme-color";
 
-import { useColorScheme } from "@/hooks/useColorScheme";
 import { moneyParser } from "@/utils/money-parser";
-import { center } from "@shopify/react-native-skia";
+
+import { Colors } from "@/constants/theme";
 
 interface CashFlowWidgetProps {
   incomeBallance: number;
@@ -22,7 +20,7 @@ export function CashFlowWidget({
   outcomeBallance,
   outcomeFuture,
 }: CashFlowWidgetProps) {
-  const colorScheme = useColorScheme();
+  const colorScheme = useThemeColor();
   const {
     container,
     wrapper,
@@ -67,7 +65,7 @@ export function CashFlowWidget({
                       points={points.value}
                       chartBounds={chartBounds}
                       barWidth={62}
-                      color={COLORS[colorScheme ?? "light"].green.primary}
+                      color={colorScheme.green.primary}
                       roundedCorners={{ topLeft: 6, topRight: 6 }}
                     />
                   )}
@@ -97,7 +95,7 @@ export function CashFlowWidget({
                       points={points.value}
                       chartBounds={chartBounds}
                       barWidth={62}
-                      color={COLORS[colorScheme ?? "light"].green.primary}
+                      color={colorScheme.green.primary}
                       roundedCorners={{ topLeft: 6, topRight: 6 }}
                     />
                   )}
@@ -119,7 +117,7 @@ export function CashFlowWidget({
   );
 }
 
-const styles = (colorScheme: ColorSchemeName) =>
+const styles = (colorScheme: Colors) =>
   StyleSheet.create({
     container: {
       paddingHorizontal: 14,
@@ -128,7 +126,7 @@ const styles = (colorScheme: ColorSchemeName) =>
     sectionTitle: {
       flex: 1,
       fontFamily: "Poppins-Regular",
-      color: COLORS[colorScheme ?? "light"].text.secondary,
+      color: colorScheme.text.secondary,
       fontSize: 16,
     },
     wrapper: {
@@ -137,7 +135,7 @@ const styles = (colorScheme: ColorSchemeName) =>
       borderRadius: 6,
       padding: 12,
       alignItems: "center",
-      backgroundColor: COLORS[colorScheme ?? "light"].background.secondary,
+      backgroundColor: colorScheme.background.secondary,
       overflow: "hidden",
       justifyContent: "center",
     },
@@ -156,13 +154,13 @@ const styles = (colorScheme: ColorSchemeName) =>
     flowItemTitle: {
       textAlign: "center",
       fontFamily: "Poppins-Regular",
-      color: COLORS[colorScheme ?? "light"].text.primary,
+      color: colorScheme.text.primary,
       fontSize: 16,
     },
     flowItemTitleFuture: {
       textAlign: "center",
       fontFamily: "Poppins-Regular",
-      color: COLORS[colorScheme ?? "light"].text.secondary,
+      color: colorScheme.text.secondary,
       fontSize: 14,
     },
     flowAmount: {
@@ -176,9 +174,9 @@ const styles = (colorScheme: ColorSchemeName) =>
       textAlign: "center",
     },
     flowAmountIncome: {
-      color: COLORS[colorScheme ?? "light"].green.primary,
+      color: colorScheme.green.primary,
     },
     flowAmountOutcome: {
-      color: COLORS[colorScheme ?? "light"].red.primary,
+      color: colorScheme.red.primary,
     },
   });

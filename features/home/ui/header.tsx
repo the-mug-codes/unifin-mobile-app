@@ -3,25 +3,25 @@ import {
   StyleSheet,
   View,
   Image,
-  ColorSchemeName,
   Text,
   SafeAreaView,
   TouchableOpacity,
   StatusBar,
   TouchableNativeFeedback,
 } from "react-native";
-import * as Haptics from "expo-haptics";
 
-import { COLORS, ICONS } from "@/constants/theme";
+import { Colors, ICONS } from "@/constants/theme";
 
-import { useColorScheme } from "@/hooks/useColorScheme";
+import { useThemeColor } from "@/hooks/use-theme-color";
+import { useButtonFeedback } from "@/hooks/use-button-feedback";
+
 import { moneyParser } from "@/utils/money-parser";
 
 interface HomeHeaderProps {
   ballance: number;
 }
 export function HomeHeader({ ballance }: HomeHeaderProps) {
-  const colorScheme = useColorScheme();
+  const colorScheme = useThemeColor();
   const [showBallance, setShowBallance] = useState<boolean>(true);
   const ballanceIsPositive: boolean = ballance < 0 ? false : true;
   const { NotificationsIcon, MenuIcon, ShowIcon, HideIcon } = ICONS;
@@ -42,35 +42,24 @@ export function HomeHeader({ ballance }: HomeHeaderProps) {
   } = styles(colorScheme, ballanceIsPositive);
 
   const showBallanceHandler = useCallback(() => {
-    if (process.env.EXPO_OS === "ios") {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
-    }
+    useButtonFeedback("medium")
     setShowBallance((value: boolean) => !value);
   }, []);
 
   const showNotificationsHandler = useCallback(() => {
-    if (process.env.EXPO_OS === "ios") {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    }
+    useButtonFeedback("medium")
   }, []);
 
   const showMenuHandler = useCallback(() => {
-    if (process.env.EXPO_OS === "ios") {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    }
+    useButtonFeedback("medium")
   }, []);
 
   const showProfileHandler = useCallback(() => {
-    if (process.env.EXPO_OS === "ios") {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
-    }
+    useButtonFeedback("medium")
   }, []);
 
-
   const changeProfilePictureHandler = useCallback(() => {
-    if (process.env.EXPO_OS === "ios") {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
-    }
+    useButtonFeedback("medium")
   }, []);
 
   return (
@@ -132,13 +121,13 @@ export function HomeHeader({ ballance }: HomeHeaderProps) {
   );
 }
 
-const styles = (colorScheme: ColorSchemeName, ballanceIsPositive: boolean) =>
+const styles = (colorScheme: Colors, ballanceIsPositive: boolean) =>
   StyleSheet.create({
     container: {
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "center",
-      backgroundColor: COLORS[colorScheme ?? "light"].brand.primary,
+      backgroundColor: colorScheme.brand.primary,
     },
     wrapper: {
       flex: 1,
@@ -162,17 +151,17 @@ const styles = (colorScheme: ColorSchemeName, ballanceIsPositive: boolean) =>
     userInfoHello: {
       fontSize: 14,
       marginBottom: -2,
-      color: COLORS[colorScheme ?? "light"].text.invert,
+      color: colorScheme.text.invert,
       fontFamily: "Poppins-Regular",
     },
     userInfoName: {
       fontSize: 18,
       marginTop: -2,
-      color: COLORS[colorScheme ?? "light"].text.invert,
+      color: colorScheme.text.invert,
       fontFamily: "Poppins-SemiBold",
     },
     icon: {
-      color: COLORS[colorScheme ?? "light"].brand.secondary,
+      color: colorScheme.brand.secondary,
       marginHorizontal: 8,
     },
     ballanceContainer: {
@@ -187,25 +176,25 @@ const styles = (colorScheme: ColorSchemeName, ballanceIsPositive: boolean) =>
       padding: 12,
       alignItems: "center",
       flexDirection: "row",
-      backgroundColor: COLORS[colorScheme ?? "light"].background.primary,
+      backgroundColor: colorScheme.background.primary,
       overflow: "hidden",
     },
     ballanceTitle: {
       fontFamily: "Poppins-SemiBold",
-      color: COLORS[colorScheme ?? "light"].text.primary,
+      color: colorScheme.text.primary,
       fontSize: 18,
     },
     ballanceAmount: {
       fontFamily: "Nunito-ExtraBold",
       color: ballanceIsPositive
-        ? COLORS[colorScheme ?? "light"].green.primary
-        : COLORS[colorScheme ?? "light"].red.primary,
+        ? colorScheme.green.primary
+        : colorScheme.red.primary,
       textAlign: "right",
       flex: 1,
       fontSize: 24,
     },
     iconShowHide: {
-      color: COLORS[colorScheme ?? "light"].text.secondary,
+      color: colorScheme.text.secondary,
       marginLeft: 12,
     },
   });

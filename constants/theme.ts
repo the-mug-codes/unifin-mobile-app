@@ -61,7 +61,7 @@ export const FONTS: Record<string, FontSource> = {
   NunitoSemiBoldItalic: require("../assets/fonts/nunito/Nunito-SemiBoldItalic.ttf"),
 };
 
-type Colors = {
+export type Colors = {
   brand: {
     primary: string;
     secondary: string;

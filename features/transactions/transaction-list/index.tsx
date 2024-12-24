@@ -1,13 +1,13 @@
 import React from "react";
 import { FlashList } from "@shopify/flash-list";
 
-import { MonthViewSelection } from "@/components/month-view-selection/month-view-selection";
-
 import { TransactionHeader } from "@/features/transactions/transaction-list/transaction-header";
 import { TransactionListItem } from "@/features/transactions/transaction-list/transaction-list-item";
 import { TransactionListFooter } from "@/features/transactions/transaction-list/transaction-list-footer";
 import { TransactionListHeader } from "@/features/transactions/transaction-list/transaction-list-header";
 import { TransactionListEmpty } from "@/features/transactions/transaction-list/transaction-list-empty";
+
+import { MonthViewSelection } from "@/components/month-view-selection";
 
 import { TransactionList as TransactionListModel } from "@/model/core";
 

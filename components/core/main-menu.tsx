@@ -2,7 +2,6 @@ import React, { FC, RefObject, useRef } from "react";
 import {
   StyleSheet,
   View,
-  ColorSchemeName,
   SafeAreaView,
   TouchableOpacity,
   GestureResponderEvent,
@@ -17,10 +16,10 @@ import { Href, useRouter, usePathname } from "expo-router";
 import { SvgProps } from "react-native-svg";
 import * as Haptics from "expo-haptics";
 
-import { COLORS, ICONS } from "@/constants/theme";
+import { Colors, ICONS } from "@/constants/theme";
 
-import { useColorScheme } from "@/hooks/useColorScheme";
 import { TransactionKind } from "@/model/transaction";
+import { useThemeColor } from "@/hooks/use-theme-color";
 
 interface MenuButtonProps {
   id?: Href;
@@ -28,7 +27,7 @@ interface MenuButtonProps {
   onPress: (href: Href) => void;
 }
 function MenuButton({ id, icon: MenuIcon, onPress }: MenuButtonProps) {
-  const colorScheme = useColorScheme();
+  const colorScheme = useThemeColor();
   const { item, itemIcon, itemIconActive } = styles(colorScheme);
   const pathName = usePathname();
 
@@ -61,7 +60,7 @@ interface FloatButtonProps {
   onPress?: (event: GestureResponderEvent) => void;
 }
 function FloatButton({ onPress }: FloatButtonProps) {
-  const colorScheme = useColorScheme();
+  const colorScheme = useThemeColor();
   const { ActionIcon } = ICONS;
   const {
     floatButtonContainer,
@@ -103,7 +102,7 @@ function ActionsMenu({
   transactionModalRef,
   addTransaction,
 }: ActionsMenuProps) {
-  const colorScheme = useColorScheme();
+  const colorScheme = useThemeColor();
   const {
     modalSheetView,
     modalSheetViewContainer,
@@ -175,7 +174,7 @@ function ActionsMenu({
 
 interface MainMenuProps {}
 export default function MainMenu({}: MainMenuProps) {
-  const colorScheme = useColorScheme();
+  const colorScheme = useThemeColor();
   const transactionModalRef = useRef<BottomSheetModal>(null);
   const { container, wrapper } = styles(colorScheme);
   const { push } = useRouter();
@@ -234,7 +233,7 @@ export default function MainMenu({}: MainMenuProps) {
   );
 }
 
-const styles = (colorScheme: ColorSchemeName) =>
+const styles = (colorScheme: Colors) =>
   StyleSheet.create({
     container: {
       paddingVertical: 12,
@@ -242,9 +241,9 @@ const styles = (colorScheme: ColorSchemeName) =>
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "center",
-      borderTopColor: COLORS[colorScheme ?? "light"].border.primary,
+      borderTopColor: colorScheme.border.primary,
       borderTopWidth: 1,
-      backgroundColor: COLORS[colorScheme ?? "light"].background.primary,
+      backgroundColor: colorScheme.background.primary,
     },
     wrapper: {
       flex: 1,
@@ -258,21 +257,21 @@ const styles = (colorScheme: ColorSchemeName) =>
       alignItems: "center",
     },
     itemIcon: {
-      color: COLORS[colorScheme ?? "light"].text.secondary,
+      color: colorScheme.text.secondary,
     },
     itemIconActive: {
-      color: COLORS[colorScheme ?? "light"].brand.primary,
+      color: colorScheme.brand.primary,
     },
     floatButtonContainer: {
       width: 80,
       position: "relative",
-      backgroundColor: COLORS[colorScheme ?? "light"].background.primary,
+      backgroundColor: colorScheme.background.primary,
     },
     floatButtonWrapper: {
       width: 80,
       height: 60,
       marginTop: 20,
-      backgroundColor: COLORS[colorScheme ?? "light"].background.primary,
+      backgroundColor: colorScheme.background.primary,
       justifyContent: "center",
       alignItems: "center",
     },
@@ -282,8 +281,8 @@ const styles = (colorScheme: ColorSchemeName) =>
       width: 80,
       height: 80,
       borderRadius: 70,
-      backgroundColor: COLORS[colorScheme ?? "light"].background.primary,
-      borderColor: COLORS[colorScheme ?? "light"].border.primary,
+      backgroundColor: colorScheme.background.primary,
+      borderColor: colorScheme.border.primary,
       borderWidth: 1,
       justifyContent: "center",
       alignItems: "center",
@@ -294,7 +293,7 @@ const styles = (colorScheme: ColorSchemeName) =>
       width: 54,
       height: 54,
       borderRadius: 50,
-      backgroundColor: COLORS[colorScheme ?? "light"].brand.primary,
+      backgroundColor: colorScheme.brand.primary,
       justifyContent: "center",
       alignItems: "center",
     },
@@ -309,7 +308,7 @@ const styles = (colorScheme: ColorSchemeName) =>
       shadowOffset: { width: 0, height: 12 },
       shadowOpacity: 0.6,
       shadowRadius: 12,
-      backgroundColor: COLORS[colorScheme ?? "light"].background.secondary,
+      backgroundColor: colorScheme.background.secondary,
     },
     modalSheetViewContainer: {
       padding: 12,
@@ -327,18 +326,18 @@ const styles = (colorScheme: ColorSchemeName) =>
       fontSize: 18,
       fontFamily: "Nunito-Bold",
       marginLeft: 6,
-      color: COLORS[colorScheme ?? "light"].button.primary.foreground,
+      color: colorScheme.button.primary.foreground,
     },
     modalSheetActionIcon: {
-      color: COLORS[colorScheme ?? "light"].button.primary.foreground,
+      color: colorScheme.button.primary.foreground,
     },
     modalSheetActionIncome: {
-      backgroundColor: COLORS[colorScheme ?? "light"].green.primary,
+      backgroundColor: colorScheme.green.primary,
     },
     modalSheetActionExpense: {
-      backgroundColor: COLORS[colorScheme ?? "light"].red.primary,
+      backgroundColor: colorScheme.red.primary,
     },
     modalSheetActionTransfer: {
-      backgroundColor: COLORS[colorScheme ?? "light"].button.primary.background,
+      backgroundColor: colorScheme.button.primary.background,
     },
   });
