@@ -9,6 +9,7 @@ import {
   StatusBar,
   TouchableNativeFeedback,
 } from "react-native";
+import { useTranslation } from "react-i18next";
 
 import { Colors, ICONS } from "@/constants/theme";
 
@@ -21,6 +22,7 @@ interface HomeHeaderProps {
   ballance: number;
 }
 export function HomeHeader({ ballance }: HomeHeaderProps) {
+  const { t } = useTranslation();
   const colorScheme = useThemeColor();
   const [showBallance, setShowBallance] = useState<boolean>(true);
   const ballanceIsPositive: boolean = ballance < 0 ? false : true;
@@ -92,7 +94,7 @@ export function HomeHeader({ ballance }: HomeHeaderProps) {
         </View>
         <View style={ballanceContainer}>
           <View style={ballanceWrapper}>
-            <Text style={ballanceTitle}>Meu saldo</Text>
+            <Text style={ballanceTitle}>{t("myBallance")}</Text>
             <Text style={ballanceAmount}>
               {showBallance ? moneyParser(ballance) : "---"}
             </Text>

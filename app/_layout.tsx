@@ -8,6 +8,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import * as SplashScreen from "expo-splash-screen";
 import Toast from "react-native-toast-message";
 import "react-native-reanimated";
+import '@/i18n.ts';
 
 
 import { THEME } from "@/constants/core";
