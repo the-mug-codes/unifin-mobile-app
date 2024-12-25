@@ -19,12 +19,10 @@ import { Colors } from "@/constants/theme";
 export function mapToItemModel<ItemType>(
   items: any[],
   idKey: string,
-  displayValueKey: string,
-  iconKey?: string
+  displayValueKey: string
 ): ItemModel<ItemType>[] {
   return items.map((item) => ({
     id: item[idKey],
-    icon: iconKey ? item[iconKey] : undefined,
     displayValue: item[displayValueKey],
     value: item,
   }));
@@ -44,7 +42,6 @@ function ListEmpty() {
 
 interface ItemModel<ItemType> {
   id: string;
-  icon?: any;
   displayValue: string;
   value: ItemType;
 }
@@ -54,9 +51,9 @@ interface ItemProps<ItemType> {
   onPress: (value: ItemType) => void;
 }
 function Item<ItemType>({ item, onPress }: ItemProps<ItemType>) {
-  const { icon, displayValue, value }: ItemModel<ItemType> = item;
+  const { displayValue, value }: ItemModel<ItemType> = item;
   const colorScheme = useThemeColor();
-  const { itemContent, itemImage, itemContentText } = styles(colorScheme);
+  const { itemContent, itemContentText } = styles(colorScheme);
 
   const selectItemHandler = () => {
     onPress(value);
@@ -68,23 +65,22 @@ function Item<ItemType>({ item, onPress }: ItemProps<ItemType>) {
       activeOpacity={0.8}
       onPress={selectItemHandler}
     >
-      {icon && <Image style={itemImage} source={{ uri: icon }} />}
       <Text style={itemContentText}>{displayValue}</Text>
     </TouchableOpacity>
   );
 }
 
-interface SelectItemPickerProps<ItemType> {
+interface InputTagsProps<ItemType> {
   label: string;
   items: ItemModel<ItemType>[];
-  onChange: (value: ItemType) => void;
+  onChange: (value: ItemType[]) => void;
   style?: StyleProp<ViewStyle>;
-  value?: string;
+  value?: string[];
   placeholder?: string;
   haveError?: boolean;
   errorMessage?: string;
 }
-export function SelectItemPicker<ItemType>({
+export function InputTags<ItemType>({
   style,
   label: labelText,
   errorMessage,
@@ -93,14 +89,14 @@ export function SelectItemPicker<ItemType>({
   placeholder,
   onChange,
   items,
-}: SelectItemPickerProps<ItemType>) {
+}: InputTagsProps<ItemType>) {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const colorScheme = useThemeColor();
   const {
     label,
     wrapper,
-    image,
     text,
+    tag,
     error,
     errorBackground,
     modalSheetView,
@@ -113,17 +109,41 @@ export function SelectItemPicker<ItemType>({
     bottomSheetModalRef.current?.present();
   }, []);
 
-  const selectItemHandler = (value: ItemType) => {
-    onChange(value);
+  const addItemHandler = (newValue: ItemType) => {
+    if (!value) return;
+    const existingItems: ItemModel<ItemType>[] = items.filter(
+      ({ id }: ItemModel<ItemType>) => value.includes(id)
+    );
+    const addNew: ItemType[] = existingItems.map(
+      ({ value }: ItemModel<ItemType>) => value
+    );
+    addNew.push(newValue);
+    onChange(addNew);
     bottomSheetModalRef.current?.close();
   };
 
-  const getValueHandler = (value: string): { icon?: string; value: string } => {
-    const selectedItem: ItemModel<ItemType>[] = items.filter(
-      ({ id }: ItemModel<ItemType>) => id === value
+  const removeItemHandler = (idToRemove: string) => {
+    if (!value) return;
+    const existingItems: ItemModel<ItemType>[] = items.filter(
+      ({ id }: ItemModel<ItemType>) => value.includes(id)
     );
-    if (selectedItem.length != 1) return { icon: undefined, value: "" };
-    return { icon: selectedItem[0].icon, value: selectedItem[0].displayValue };
+    const updatedItems: ItemModel<ItemType>[] = existingItems.filter(
+      ({ id }: ItemModel<ItemType>) => id !== idToRemove
+    );
+    const newItems: ItemType[] = updatedItems.map(
+      ({ value }: ItemModel<ItemType>) => value
+    );
+    onChange(newItems);
+  };
+
+  const getValueHandler = (value: string[]): { id: string; value: string }[] => {
+    const selectedItem: ItemModel<ItemType>[] = items.filter(
+      ({ id }: ItemModel<ItemType>) => value.includes(id)
+    );
+    return selectedItem.map(({ id, displayValue }: ItemModel<ItemType>) => ({
+      id,
+      value: displayValue,
+    }));
   };
 
   return (
@@ -134,20 +154,21 @@ export function SelectItemPicker<ItemType>({
         style={[wrapper, haveError && errorBackground]}
         onPress={showHideDatePickerHandler}
       >
-        {value ? (
-          <>
-            {getValueHandler(value).icon && (
-              <Image
-                style={image}
-                source={{ uri: getValueHandler(value).icon }}
-              />
-            )}
-            <Text style={[text, haveError && error]}>
-              {getValueHandler(value).value}
-            </Text>
-          </>
+        {value && value?.length ? (
+          getValueHandler(value).map(({id, value}) => (
+            <TouchableOpacity
+              key={id}
+              activeOpacity={0.8}
+              style={tag}
+              onPress={() => removeItemHandler(id)}
+            >
+              <Text style={[text, haveError && error]}>{value}</Text>
+            </TouchableOpacity>
+          ))
         ) : (
-          <Text style={[text, haveError && error]}>{placeholder}</Text>
+          <Text style={[text, haveError && error, { padding: 6 }]}>
+            {placeholder}
+          </Text>
         )}
       </TouchableOpacity>
       {haveError && <Text style={error}>{errorMessage}</Text>}
@@ -163,7 +184,7 @@ export function SelectItemPicker<ItemType>({
           <FlashList
             data={items}
             renderItem={({ item }) => (
-              <Item item={item} onPress={selectItemHandler} />
+              <Item item={item} onPress={addItemHandler} />
             )}
             ListEmptyComponent={ListEmpty}
             estimatedFirstItemOffset={10}
@@ -190,19 +211,19 @@ const styles = (colorScheme: Colors) =>
       alignItems: "center",
       marginVertical: 14,
       borderRadius: 6,
-      padding: 12,
+      padding: 6,
       backgroundColor: colorScheme.background.secondary,
-    },
-    image: {
-      width: 24,
-      height: 24,
-      borderRadius: 24,
-      marginRight: 6,
     },
     text: {
       fontFamily: "Lato-Regular",
       color: colorScheme.text.primary,
       fontSize: 14,
+    },
+    tag: {
+      borderRadius: 6,
+      padding: 6,
+      backgroundColor: colorScheme.border.primary,
+      margin: 3,
     },
     error: {
       flex: 1,
@@ -244,11 +265,6 @@ const styles = (colorScheme: Colors) =>
       borderColor: colorScheme.border.primary,
       borderWidth: 1.4,
       borderRadius: 6,
-    },
-    itemImage: {
-      width: 36,
-      height: 36,
-      borderRadius: 36,
     },
     itemContentText: {
       fontSize: 18,

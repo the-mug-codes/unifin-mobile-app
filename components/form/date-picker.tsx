@@ -47,7 +47,7 @@ export function DateTimePicker({
     setDatePickerVisibility((value: boolean) => !value);
   };
 
-  const handleConfirm = (date: Date) => {
+  const selectDateHandler = (date: Date) => {
     onChange(date);
     setDatePickerVisibility(false);
   };
@@ -70,7 +70,7 @@ export function DateTimePicker({
           confirmTextIOS={t("select")}
           cancelTextIOS={t("cancel")}
           onConfirm={(date) => {
-            handleConfirm(date);
+            selectDateHandler(date);
           }}
           onCancel={showHideDatePickerHandler}
         />

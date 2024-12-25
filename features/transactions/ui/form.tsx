@@ -16,6 +16,7 @@ import {
 } from "@/components/form/select-item-picker";
 
 import { Colors } from "@/constants/theme";
+import { InputTags } from "@/components/form/input-tags";
 
 export interface FormRef {
   submitForm: () => void;
@@ -49,7 +50,7 @@ function Form({ onSubmit }: FormProps, ref: React.Ref<FormRef>) {
       ["daily", "weekly", "monthly"],
       "Repetição inválida"
     ),
-    tags: Yup.string(),
+    tags: Yup.array(Yup.string().required()),
     notes: Yup.string().max(200, "As notas devem ter no máximo 200 caracteres"),
   });
 
@@ -66,7 +67,7 @@ function Form({ onSubmit }: FormProps, ref: React.Ref<FormRef>) {
       description: "",
       category: "",
       repeat: "",
-      tags: "",
+      tags: [],
       notes: "",
     },
   });
@@ -135,14 +136,14 @@ function Form({ onSubmit }: FormProps, ref: React.Ref<FormRef>) {
                 },
               ],
               "id",
-              "",
-              "displayValue"
+              "displayValue",
+              "icon",
             )}
             placeholder={t("selectOption")}
-            displayValue={value}
+            value={value}
             haveError={!!errors.date}
             errorMessage={errors.date?.message}
-            onChange={({ displayValue }) => onChange(displayValue)}
+            onChange={({ id }) => onChange(id)}
           />
         )}
       />
@@ -158,23 +159,38 @@ function Form({ onSubmit }: FormProps, ref: React.Ref<FormRef>) {
           />
         )}
       />
-      <Text style={label}>Categoria</Text>
       <Controller
         control={control}
         name="category"
         render={({ field: { onChange, value } }) => (
-          <TextInput
-            style={[input, errors.category && errorBackground]}
-            placeholder="descrição da transação"
-            placeholderTextColor={
-              errors.category ? error.color : colorScheme.text.secondary
-            }
+          <SelectItemPicker<any>
+            label={t("category")}
+            items={mapToItemModel(
+              [
+                {
+                  id: "1",
+                  displayValue: "Person 1",
+                },
+                {
+                  id: "2",
+                  displayValue: "Person 2",
+                },
+                {
+                  id: "3",
+                  displayValue: "Person 3",
+                },
+              ],
+              "id",
+              "displayValue"
+            )}
+            placeholder={t("selectOption")}
             value={value}
-            onChangeText={onChange}
+            haveError={!!errors.date}
+            errorMessage={errors.date?.message}
+            onChange={({ id }) => onChange(id)}
           />
         )}
       />
-      {errors.category && <Text style={error}>{errors.category.message}</Text>}
       <Text style={label}>Repetir</Text>
       <Controller
         control={control}
@@ -192,23 +208,42 @@ function Form({ onSubmit }: FormProps, ref: React.Ref<FormRef>) {
         )}
       />
       {errors.repeat && <Text style={error}>{errors.repeat.message}</Text>}
-      <Text style={label}>Tags</Text>
       <Controller
         control={control}
         name="tags"
         render={({ field: { onChange, value } }) => (
-          <TextInput
-            style={[input, errors.tags && errorBackground]}
-            placeholder="descrição da transação"
-            placeholderTextColor={
-              errors.tags ? error.color : colorScheme.text.secondary
-            }
-            value={value}
-            onChangeText={onChange}
-          />
+          <InputTags<any>
+          label={t("tags")}
+          items={mapToItemModel(
+            [
+              {
+                id: "1",
+                icon: "https://via.placeholder.com/150", // URL de imagem ou componente
+                displayValue: "Person 1",
+              },
+              {
+                id: "2",
+                icon: "https://via.placeholder.com/150",
+                displayValue: "Person 2",
+              },
+              {
+                id: "3",
+                icon: "https://via.placeholder.com/150",
+                displayValue: "Person 3",
+              },
+            ],
+            "id",
+            "displayValue",
+            "icon",
+          )}
+          placeholder={t("selectOption")}
+          value={value}
+          haveError={!!errors.tags}
+          errorMessage={errors.tags?.message}
+          onChange={(value) => onChange(value.map(({id}) => id))}
+        />
         )}
       />
-      {errors.tags && <Text style={error}>{errors.tags.message}</Text>}
       <Controller
         control={control}
         name="notes"
