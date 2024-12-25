@@ -2,17 +2,18 @@ import React, { useCallback, useRef } from "react";
 import {
   Text,
   StyleSheet,
-  Image,
   View,
   ViewStyle,
   StyleProp,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { useTranslation } from "react-i18next";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { FlashList } from "@shopify/flash-list";
 
 import { useThemeColor } from "@/hooks/use-theme-color";
+import { useIcon } from "@/hooks/use-icon";
 
 import { Colors } from "@/constants/theme";
 
@@ -90,13 +91,16 @@ export function InputTags<ItemType>({
   onChange,
   items,
 }: InputTagsProps<ItemType>) {
+  const { t } = useTranslation();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const colorScheme = useThemeColor();
+  const { CloseIcon } = useIcon();
   const {
     label,
     wrapper,
     text,
     tag,
+    removeTag,
     error,
     errorBackground,
     modalSheetView,
@@ -123,20 +127,34 @@ export function InputTags<ItemType>({
   };
 
   const removeItemHandler = (idToRemove: string) => {
-    if (!value) return;
-    const existingItems: ItemModel<ItemType>[] = items.filter(
-      ({ id }: ItemModel<ItemType>) => value.includes(id)
-    );
-    const updatedItems: ItemModel<ItemType>[] = existingItems.filter(
-      ({ id }: ItemModel<ItemType>) => id !== idToRemove
-    );
-    const newItems: ItemType[] = updatedItems.map(
-      ({ value }: ItemModel<ItemType>) => value
-    );
-    onChange(newItems);
+    Alert.alert(t("askRemoveTitle"), t("askRemove"), [
+      {
+        text: t("keep"),
+        style: "default",
+      },
+      {
+        text: t("delete"),
+        style: "destructive",
+        onPress: () => {
+          if (!value) return;
+          const existingItems: ItemModel<ItemType>[] = items.filter(
+            ({ id }: ItemModel<ItemType>) => value.includes(id)
+          );
+          const updatedItems: ItemModel<ItemType>[] = existingItems.filter(
+            ({ id }: ItemModel<ItemType>) => id !== idToRemove
+          );
+          const newItems: ItemType[] = updatedItems.map(
+            ({ value }: ItemModel<ItemType>) => value
+          );
+          onChange(newItems);
+        },
+      },
+    ]);
   };
 
-  const getValueHandler = (value: string[]): { id: string; value: string }[] => {
+  const getValueHandler = (
+    value: string[]
+  ): { id: string; value: string }[] => {
     const selectedItem: ItemModel<ItemType>[] = items.filter(
       ({ id }: ItemModel<ItemType>) => value.includes(id)
     );
@@ -155,7 +173,7 @@ export function InputTags<ItemType>({
         onPress={showHideDatePickerHandler}
       >
         {value && value?.length ? (
-          getValueHandler(value).map(({id, value}) => (
+          getValueHandler(value).map(({ id, value }) => (
             <TouchableOpacity
               key={id}
               activeOpacity={0.8}
@@ -163,6 +181,12 @@ export function InputTags<ItemType>({
               onPress={() => removeItemHandler(id)}
             >
               <Text style={[text, haveError && error]}>{value}</Text>
+              <CloseIcon
+                width={12}
+                height={12}
+                style={removeTag}
+                fill={removeTag.color}
+              />
             </TouchableOpacity>
           ))
         ) : (
@@ -216,14 +240,21 @@ const styles = (colorScheme: Colors) =>
     },
     text: {
       fontFamily: "Lato-Regular",
-      color: colorScheme.text.primary,
+      color: colorScheme.text.invert,
       fontSize: 14,
     },
     tag: {
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center",
       borderRadius: 6,
       padding: 6,
-      backgroundColor: colorScheme.border.primary,
+      backgroundColor: colorScheme.brand.primary,
       margin: 3,
+    },
+    removeTag: {
+      marginLeft: 3,
+      color: colorScheme.text.invert,
     },
     error: {
       flex: 1,

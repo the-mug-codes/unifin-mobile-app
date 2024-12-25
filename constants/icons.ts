@@ -21,6 +21,7 @@ import DeleteIcon from "@/assets/images/icons/delete.svg";
 import SearchIcon from "@/assets/images/icons/search.svg";
 import NotFoundIcon from "@/assets/images/icons/not-found.svg";
 import AddIcon from "@/assets/images/icons/add.svg";
+import CloseIcon from "@/assets/images/icons/close.svg";
 
 export type Icon =
   | "ActionIcon"
@@ -43,7 +44,8 @@ export type Icon =
   | "DeleteIcon"
   | "SearchIcon"
   | "NotFoundIcon"
-  | "AddIcon";
+  | "AddIcon"
+  | "CloseIcon";
 export const ICONS: { [key: string]: FC<SvgProps> } = {
   ActionIcon,
   CalendarIcon,
@@ -66,4 +68,5 @@ export const ICONS: { [key: string]: FC<SvgProps> } = {
   SearchIcon,
   NotFoundIcon,
   AddIcon,
+  CloseIcon,
 };
