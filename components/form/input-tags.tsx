@@ -87,7 +87,7 @@ export function InputTags<ItemType>({
   errorMessage,
   haveError,
   value,
-  placeholder,
+  placeholder:placeholderText,
   onChange,
   items,
 }: InputTagsProps<ItemType>) {
@@ -98,8 +98,9 @@ export function InputTags<ItemType>({
   const {
     label,
     wrapper,
-    text,
+    placeholder,
     tag,
+    tagText,
     removeTag,
     error,
     errorBackground,
@@ -180,7 +181,7 @@ export function InputTags<ItemType>({
               style={tag}
               onPress={() => removeItemHandler(id)}
             >
-              <Text style={[text, haveError && error]}>{value}</Text>
+              <Text style={[tagText, haveError && error]}>{value}</Text>
               <CloseIcon
                 width={12}
                 height={12}
@@ -190,8 +191,8 @@ export function InputTags<ItemType>({
             </TouchableOpacity>
           ))
         ) : (
-          <Text style={[text, haveError && error, { padding: 6 }]}>
-            {placeholder}
+          <Text style={[placeholder, haveError && error, { padding: 6 }]}>
+            {placeholderText}
           </Text>
         )}
       </TouchableOpacity>
@@ -238,9 +239,9 @@ const styles = (colorScheme: Colors) =>
       padding: 6,
       backgroundColor: colorScheme.background.secondary,
     },
-    text: {
+    placeholder: {
       fontFamily: "Lato-Regular",
-      color: colorScheme.text.invert,
+      color: colorScheme.text.secondary,
       fontSize: 14,
     },
     tag: {
@@ -248,12 +249,18 @@ const styles = (colorScheme: Colors) =>
       justifyContent: "center",
       alignItems: "center",
       borderRadius: 6,
-      padding: 6,
+      paddingVertical: 6,
+      paddingLeft: 12,
       backgroundColor: colorScheme.brand.primary,
       margin: 3,
     },
+    tagText: {
+      fontFamily: "Lato-Bold",
+      color: colorScheme.text.invert,
+      fontSize: 14,
+    },
     removeTag: {
-      marginLeft: 3,
+      marginHorizontal: 6,
       color: colorScheme.text.invert,
     },
     error: {

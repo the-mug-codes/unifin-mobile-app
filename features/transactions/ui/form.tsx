@@ -1,5 +1,5 @@
 import React, { forwardRef, useImperativeHandle } from "react";
-import { StyleSheet, View, Text, Switch, TextInput } from "react-native";
+import { StyleSheet, View, Text, Switch } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -8,6 +8,8 @@ import * as Yup from "yup";
 import { useThemeColor } from "@/hooks/use-theme-color";
 
 import { DateTimePicker } from "@/components/form/date-picker";
+import { InputTags } from "@/components/form/input-tags";
+import { RecurrencePicker } from "@/components/form/recurrence-picker";
 import { InputText } from "@/components/form/input-text";
 import { InputTextArea } from "@/components/form/input-textarea";
 import {
@@ -16,7 +18,6 @@ import {
 } from "@/components/form/select-item-picker";
 
 import { Colors } from "@/constants/theme";
-import { InputTags } from "@/components/form/input-tags";
 
 export interface FormRef {
   submitForm: () => void;
@@ -89,7 +90,7 @@ function Form({ onSubmit }: FormProps, ref: React.Ref<FormRef>) {
                 value={value}
                 haveError={!!errors.date}
                 errorMessage={errors.date?.message}
-                onChange={(value: Date) => onChange(value.toISOString())}
+                onChange={(value?: Date) => onChange(value ? value.toISOString() : undefined)}
               />
             )}
           />
@@ -137,13 +138,13 @@ function Form({ onSubmit }: FormProps, ref: React.Ref<FormRef>) {
               ],
               "id",
               "displayValue",
-              "icon",
+              "icon"
             )}
             placeholder={t("selectOption")}
             value={value}
             haveError={!!errors.date}
             errorMessage={errors.date?.message}
-            onChange={({ id }) => onChange(id)}
+            onChange={(value) => onChange(value ? value.id : undefined)}
           />
         )}
       />
@@ -155,6 +156,8 @@ function Form({ onSubmit }: FormProps, ref: React.Ref<FormRef>) {
             label={t("description")}
             placeholder="descrição da transação"
             value={value}
+            haveError={!!errors.description}
+            errorMessage={errors.description?.message}
             onChange={onChange}
           />
         )}
@@ -185,63 +188,60 @@ function Form({ onSubmit }: FormProps, ref: React.Ref<FormRef>) {
             )}
             placeholder={t("selectOption")}
             value={value}
-            haveError={!!errors.date}
-            errorMessage={errors.date?.message}
-            onChange={({ id }) => onChange(id)}
+            haveError={!!errors.category}
+            errorMessage={errors.category?.message}
+            onChange={(value) => onChange(value ? value.id : undefined)}
           />
         )}
       />
-      <Text style={label}>Repetir</Text>
       <Controller
         control={control}
         name="repeat"
         render={({ field: { onChange, value } }) => (
-          <TextInput
-            style={[input, errors.repeat && errorBackground]}
-            placeholder="descrição da transação"
-            placeholderTextColor={
-              errors.repeat ? error.color : colorScheme.text.secondary
-            }
+          <RecurrencePicker
+            label={t("repeat")}
             value={value}
-            onChangeText={onChange}
+            placeholder={t("selectOption")}
+            haveError={!!errors.repeat}
+            errorMessage={errors.repeat?.message}
+            onChange={onChange}
           />
         )}
       />
-      {errors.repeat && <Text style={error}>{errors.repeat.message}</Text>}
       <Controller
         control={control}
         name="tags"
         render={({ field: { onChange, value } }) => (
           <InputTags<any>
-          label={t("tags")}
-          items={mapToItemModel(
-            [
-              {
-                id: "1",
-                icon: "https://via.placeholder.com/150", // URL de imagem ou componente
-                displayValue: "Person 1",
-              },
-              {
-                id: "2",
-                icon: "https://via.placeholder.com/150",
-                displayValue: "Person 2",
-              },
-              {
-                id: "3",
-                icon: "https://via.placeholder.com/150",
-                displayValue: "Person 3",
-              },
-            ],
-            "id",
-            "displayValue",
-            "icon",
-          )}
-          placeholder={t("selectOption")}
-          value={value}
-          haveError={!!errors.tags}
-          errorMessage={errors.tags?.message}
-          onChange={(value) => onChange(value.map(({id}) => id))}
-        />
+            label={t("tags")}
+            items={mapToItemModel(
+              [
+                {
+                  id: "1",
+                  icon: "https://via.placeholder.com/150", // URL de imagem ou componente
+                  displayValue: "Person 1",
+                },
+                {
+                  id: "2",
+                  icon: "https://via.placeholder.com/150",
+                  displayValue: "Person 2",
+                },
+                {
+                  id: "3",
+                  icon: "https://via.placeholder.com/150",
+                  displayValue: "Person 3",
+                },
+              ],
+              "id",
+              "displayValue",
+              "icon"
+            )}
+            placeholder={t("selectOption")}
+            value={value}
+            haveError={!!errors.tags}
+            errorMessage={errors.tags?.message}
+            onChange={(value) => onChange(value.map(({ id }) => id))}
+          />
         )}
       />
       <Controller
@@ -252,6 +252,8 @@ function Form({ onSubmit }: FormProps, ref: React.Ref<FormRef>) {
             label={t("notes")}
             placeholder="descrição da transação"
             value={value}
+            haveError={!!errors.notes}
+            errorMessage={errors.notes?.message}
             onChange={onChange}
           />
         )}

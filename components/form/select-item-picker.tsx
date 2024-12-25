@@ -7,12 +7,14 @@ import {
   ViewStyle,
   StyleProp,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { useTranslation } from "react-i18next";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { FlashList } from "@shopify/flash-list";
 
 import { useThemeColor } from "@/hooks/use-theme-color";
+import { useIcon } from "@/hooks/use-icon";
 
 import { Colors } from "@/constants/theme";
 
@@ -77,7 +79,7 @@ function Item<ItemType>({ item, onPress }: ItemProps<ItemType>) {
 interface SelectItemPickerProps<ItemType> {
   label: string;
   items: ItemModel<ItemType>[];
-  onChange: (value: ItemType) => void;
+  onChange: (value?: ItemType) => void;
   style?: StyleProp<ViewStyle>;
   value?: string;
   placeholder?: string;
@@ -90,10 +92,11 @@ export function SelectItemPicker<ItemType>({
   errorMessage,
   haveError,
   value,
-  placeholder,
+  placeholder: placeholderText,
   onChange,
   items,
 }: SelectItemPickerProps<ItemType>) {
+  const { t } = useTranslation();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const colorScheme = useThemeColor();
   const {
@@ -101,13 +104,17 @@ export function SelectItemPicker<ItemType>({
     wrapper,
     image,
     text,
+    placeholder,
     error,
     errorBackground,
     modalSheetView,
     modalSheetHandleArea,
     modalSheetHandle,
     contentContainer,
+    clear,
+    clearIcon,
   } = styles(colorScheme);
+  const { CloseIcon } = useIcon();
 
   const showHideDatePickerHandler = useCallback(() => {
     bottomSheetModalRef.current?.present();
@@ -124,6 +131,22 @@ export function SelectItemPicker<ItemType>({
     );
     if (selectedItem.length != 1) return { icon: undefined, value: "" };
     return { icon: selectedItem[0].icon, value: selectedItem[0].displayValue };
+  };
+
+  const clearValuesHandler = () => {
+    Alert.alert(t("askRemoveTitle"), t("askRemove"), [
+      {
+        text: t("keep"),
+        style: "default",
+      },
+      {
+        text: t("delete"),
+        style: "destructive",
+        onPress: () => {
+          onChange(undefined);
+        },
+      },
+    ]);
   };
 
   return (
@@ -145,9 +168,18 @@ export function SelectItemPicker<ItemType>({
             <Text style={[text, haveError && error]}>
               {getValueHandler(value).value}
             </Text>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={clear}
+              onPress={clearValuesHandler}
+            >
+              <CloseIcon width={12} height={12} fill={clearIcon.color} />
+            </TouchableOpacity>
           </>
         ) : (
-          <Text style={[text, haveError && error]}>{placeholder}</Text>
+          <Text style={[placeholder, haveError && error]}>
+            {placeholderText}
+          </Text>
         )}
       </TouchableOpacity>
       {haveError && <Text style={error}>{errorMessage}</Text>}
@@ -190,18 +222,26 @@ const styles = (colorScheme: Colors) =>
       alignItems: "center",
       marginVertical: 14,
       borderRadius: 6,
-      padding: 12,
       backgroundColor: colorScheme.background.secondary,
     },
     image: {
       width: 24,
       height: 24,
       borderRadius: 24,
-      marginRight: 6,
+      marginLeft: 12,
     },
     text: {
+      flex: 1,
+      padding: 12,
       fontFamily: "Lato-Regular",
       color: colorScheme.text.primary,
+      fontSize: 14,
+    },
+    placeholder: {
+      padding: 12,
+      flex: 1,
+      fontFamily: "Lato-Regular",
+      color: colorScheme.text.secondary,
       fontSize: 14,
     },
     error: {
@@ -255,5 +295,11 @@ const styles = (colorScheme: Colors) =>
       fontFamily: "Nunito-Bold",
       marginLeft: 6,
       color: colorScheme.text.primary,
+    },
+    clear: {
+      padding: 12,
+    },
+    clearIcon: {
+      color: colorScheme.text.secondary,
     },
   });
