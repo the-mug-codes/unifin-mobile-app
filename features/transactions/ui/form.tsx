@@ -47,10 +47,10 @@ function Form({ onSubmit }: FormProps, ref: React.Ref<FormRef>) {
     account: Yup.string().required("A conta é obrigatória"),
     description: Yup.string().required("A descrição é obrigatória"),
     category: Yup.string().required("A categoria é obrigatória"),
-    repeat: Yup.string().oneOf(
-      ["daily", "weekly", "monthly"],
-      "Repetição inválida"
-    ),
+    repeat: Yup.object({
+      recurrence: Yup.string().optional(),
+      limit: Yup.number().optional(),
+    }).optional(),
     tags: Yup.array(Yup.string().required()),
     notes: Yup.string().max(200, "As notas devem ter no máximo 200 caracteres"),
   });
@@ -67,7 +67,7 @@ function Form({ onSubmit }: FormProps, ref: React.Ref<FormRef>) {
       account: "",
       description: "",
       category: "",
-      repeat: "",
+      repeat: undefined,
       tags: [],
       notes: "",
     },
@@ -90,7 +90,9 @@ function Form({ onSubmit }: FormProps, ref: React.Ref<FormRef>) {
                 value={value}
                 haveError={!!errors.date}
                 errorMessage={errors.date?.message}
-                onChange={(value?: Date) => onChange(value ? value.toISOString() : undefined)}
+                onChange={(value?: Date) =>
+                  onChange(value ? value.toISOString() : undefined)
+                }
               />
             )}
           />

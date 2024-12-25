@@ -49,3 +49,13 @@ export const DAYS_OF_WEEK: { [key: string]: string[] } = {
     "sábado",
   ],
 };
+
+export const RECURRENCE: string[] = [
+  "daily",
+  "weekly",
+  "biweekly",
+  "monthly",
+  "quarterly",
+  "semiannually",
+  "annually",
+];

@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   Text,
   StyleSheet,
@@ -6,23 +6,26 @@ import {
   ViewStyle,
   StyleProp,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { useTranslation } from "react-i18next";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
+import { Picker } from "@react-native-picker/picker";
 
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { useIcon } from "@/hooks/use-icon";
 
 import { Colors } from "@/constants/theme";
 import { Button } from "../button";
+import { RECURRENCE } from "@/constants/date-time";
 
 type Mode = "split" | "fixed";
 
 interface RecurrencePickerProps {
   label: string;
-  onChange: (value: string) => void;
+  onChange: (recurrence?: string, limit?: number) => void;
   style?: StyleProp<ViewStyle>;
-  value?: string;
+  value?: { recurrence?: string; limit?: number };
   placeholder?: string;
   haveError?: boolean;
   errorMessage?: string;
@@ -38,6 +41,9 @@ export function RecurrencePicker({
 }: RecurrencePickerProps) {
   const { t } = useTranslation();
   const [mode, setMode] = useState<Mode>("split");
+  const [selectedRecurrence, setSelectedRecurrence] = useState<number>(3);
+  const [selectedRecurrenceLimit, setSelectedRecurrenceLimit] =
+    useState<number>();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const colorScheme = useThemeColor();
   const { CloseIcon } = useIcon();
@@ -55,13 +61,46 @@ export function RecurrencePicker({
     modalSheetHandleArea,
     modalSheetHandle,
     contentContainer,
+    row,
+    col,
     clear,
     clearIcon,
   } = styles(colorScheme);
 
-  const showHideDatePickerHandler = (mode: Mode) => {
+  const showRecurrencePickerHandler = (mode: Mode) => {
     setMode(mode);
     bottomSheetModalRef.current?.present();
+  };
+
+  const hideRecurrencePickerHandler = () => {
+    bottomSheetModalRef.current?.close();
+  };
+
+  const selectRecurrenceHandler = () => {
+    onChange(RECURRENCE[selectedRecurrence], selectedRecurrenceLimit);
+    hideRecurrencePickerHandler();
+  };
+
+  const clearValuesHandler = () => {
+    Alert.alert(t("askRemoveTitle"), t("askRemove"), [
+      {
+        text: t("keep"),
+        style: "default",
+      },
+      {
+        text: t("delete"),
+        style: "destructive",
+        onPress: () => {
+          onChange(undefined, undefined);
+        },
+      },
+    ]);
+  };
+
+  const getValueHandler = (recurrence?: string, limit?: number): string => {
+    if (!recurrence) return ""
+    if (!limit) return `${t("repeatTransaction")} ${t(recurrence)}`;
+    return `${t("repeatTransaction")} ${limit}x ${t(recurrence)}`;
   };
 
   return (
@@ -72,14 +111,14 @@ export function RecurrencePicker({
           <>
             <TouchableOpacity
               style={button}
-              onPress={() => showHideDatePickerHandler("split")}
+              onPress={() => showRecurrencePickerHandler("split")}
               activeOpacity={0.8}
             >
               <Text style={buttonText}>{t("split")}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[button, { marginHorizontal: 12 }]}
-              onPress={() => showHideDatePickerHandler("fixed")}
+              onPress={() => showRecurrencePickerHandler("fixed")}
               activeOpacity={0.8}
             >
               <Text style={buttonText}>{t("fixed")}</Text>
@@ -89,8 +128,14 @@ export function RecurrencePicker({
         <View style={[wrapper, haveError && errorBackground]}>
           {value ? (
             <>
-              <Text style={text}>VALUE</Text>
-              <TouchableOpacity activeOpacity={0.8} style={clear}>
+              <Text style={text}>
+                {getValueHandler(value.recurrence, value.limit)}
+              </Text>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                style={clear}
+                onPress={clearValuesHandler}
+              >
                 <CloseIcon width={12} height={12} fill={clearIcon.color} />
               </TouchableOpacity>
             </>
@@ -109,7 +154,64 @@ export function RecurrencePicker({
         enablePanDownToClose
       >
         <BottomSheetView style={contentContainer}>
-          <Text></Text>
+          {mode == "fixed" ? (
+            <Picker
+              selectedValue={selectedRecurrence}
+              onValueChange={setSelectedRecurrence}
+            >
+              {RECURRENCE.map((recurrence: string, index: number) => (
+                <Picker.Item
+                  key={recurrence}
+                  label={t(recurrence)}
+                  value={index}
+                />
+              ))}
+            </Picker>
+          ) : (
+            <>
+              <View style={row}>
+                <View style={col}>
+                  <Picker
+                    style={{ width: "100%" }}
+                    selectedValue={selectedRecurrenceLimit}
+                    onValueChange={setSelectedRecurrenceLimit}
+                  >
+                    {[...Array(98)].map((_, index) => {
+                      return (
+                        <Picker.Item
+                          key={index}
+                          label={`${index + 2}x`}
+                          value={index + 2}
+                        />
+                      );
+                    })}
+                  </Picker>
+                </View>
+                <View style={col}>
+                  <Picker
+                    selectedValue={selectedRecurrence}
+                    onValueChange={setSelectedRecurrence}
+                  >
+                    {RECURRENCE.map((recurrence: string, index: number) => (
+                      <Picker.Item
+                        key={recurrence}
+                        label={t(recurrence)}
+                        value={index}
+                      />
+                    ))}
+                  </Picker>
+                </View>
+              </View>
+            </>
+          )}
+          <View style={{ flexDirection: "row" }}>
+            <Button
+              text={t("cancel")}
+              variant="tertiary"
+              onPressIn={hideRecurrencePickerHandler}
+            />
+            <Button text={t("confirm")} onPressIn={selectRecurrenceHandler} />
+          </View>
         </BottomSheetView>
       </BottomSheetModal>
     </View>
@@ -190,9 +292,17 @@ const styles = (colorScheme: Colors) =>
       backgroundColor: colorScheme.brand.primary,
     },
     contentContainer: {
-      height: 240,
+      height: 300,
       marginHorizontal: 12,
       backgroundColor: colorScheme.background.secondary,
+    },
+    row: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+    },
+    col: {
+      flex: 1,
+      overflow: "hidden",
     },
     clear: {
       padding: 12,
