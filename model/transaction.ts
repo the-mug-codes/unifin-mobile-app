@@ -1,8 +1,13 @@
-export type TransactionKind = "income" | "expense" | "transfer";
+export type TransactionKind =
+  | "income"
+  | "expense"
+  | "transfer"
+  | "credit-card-expense"
+  | "credit-card-refund";
 
 export interface TransactionCategory {
   id: string;
-  emoji: string
+  emoji: string;
   name: string;
 }
 
@@ -13,6 +18,6 @@ export interface Transaction {
   date: Date;
   amount: number;
   categoryID?: string;
-  category?: TransactionCategory
-  reconciledAt?: Date
+  category?: TransactionCategory;
+  reconciledAt?: Date;
 }

@@ -111,7 +111,7 @@ const styles = (colorScheme: Colors) =>
     },
     modalSheetViewContainer: {
       padding: 12,
-      marginBottom: 20,
+      paddingBottom: 20,
       backgroundColor: colorScheme.background.secondary,
     },
     modalSheetAction: {

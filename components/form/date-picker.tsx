@@ -23,7 +23,7 @@ interface DateTimePickerProps {
   label: string;
   onChange: (date?: Date) => void;
   style?: StyleProp<ViewStyle>;
-  value?: string;
+  value?: Date;
   placeholder?: string;
   haveError?: boolean;
   errorMessage?: string;

@@ -7,6 +7,7 @@ import {
   useColorScheme,
   ScrollView,
   Platform,
+  Alert,
 } from "react-native";
 import { useRouter } from "expo-router";
 import Toast from "react-native-toast-message";
@@ -47,7 +48,19 @@ export default function TransactionForm({ kind }: TransactionFormProps) {
     } catch (error) {}
   };
 
-  const cancelHandler = () => back();
+  const cancelHandler = () => {
+    Alert.alert(t("arkCancelTitle"), t("askCancel"), [
+      {
+        text: t("continue"),
+        style: "destructive",
+        onPress: back,
+      },
+      {
+        text: t("giveUp"),
+        style: "default",
+      },
+    ]);
+  };
 
   return (
     <BottomSheetModalProvider>

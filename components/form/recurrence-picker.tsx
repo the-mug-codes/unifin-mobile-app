@@ -69,6 +69,11 @@ export function RecurrencePicker({
 
   const showRecurrencePickerHandler = (mode: Mode) => {
     setMode(mode);
+    if (mode == "split") {
+      setSelectedRecurrenceLimit(2);
+    } else {
+      setSelectedRecurrenceLimit(0);
+    }
     bottomSheetModalRef.current?.present();
   };
 
@@ -98,7 +103,7 @@ export function RecurrencePicker({
   };
 
   const getValueHandler = (recurrence?: string, limit?: number): string => {
-    if (!recurrence) return ""
+    if (!recurrence) return "";
     if (!limit) return `${t("repeatTransaction")} ${t(recurrence)}`;
     return `${t("repeatTransaction")} ${limit}x ${t(recurrence)}`;
   };
@@ -293,7 +298,7 @@ const styles = (colorScheme: Colors) =>
     },
     contentContainer: {
       height: 300,
-      marginHorizontal: 12,
+      paddingHorizontal: 12,
       backgroundColor: colorScheme.background.secondary,
     },
     row: {
