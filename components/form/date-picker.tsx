@@ -9,12 +9,7 @@ import {
   Alert,
 } from "react-native";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
-import {
-  Calendar,
-  CalendarList,
-  Agenda,
-  DateData,
-} from "react-native-calendars";
+import { Calendar, DateData, LocaleConfig } from "react-native-calendars";
 import { useTranslation } from "react-i18next";
 
 import { useThemeColor } from "@/hooks/use-theme-color";
@@ -49,21 +44,73 @@ export function DateTimePicker({
   const { t } = useTranslation();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const colorScheme = useThemeColor();
+  const { LeftIcon, RightIcon, CalendarIcon } = useIcon();
   const {
     label,
     wrapper,
     text,
+    icon,
     placeholder,
     error,
     errorBackground,
     clear,
     clearIcon,
+    navigateIcon,
     contentContainer,
     modalSheetHandle,
     modalSheetHandleArea,
     modalSheetView,
   } = styles(colorScheme);
   const { CloseIcon } = useIcon();
+
+  LocaleConfig.locales[""] = {
+    monthNames: [
+      t("calendar.month.long.january"),
+      t("calendar.month.long.february"),
+      t("calendar.month.long.march"),
+      t("calendar.month.long.april"),
+      t("calendar.month.long.may"),
+      t("calendar.month.long.june"),
+      t("calendar.month.long.july"),
+      t("calendar.month.long.august"),
+      t("calendar.month.long.september"),
+      t("calendar.month.long.october"),
+      t("calendar.month.long.november"),
+      t("calendar.month.long.december"),
+    ],
+    monthNamesShort: [
+      t("calendar.month.short.jan"),
+      t("calendar.month.short.feb"),
+      t("calendar.month.short.mar"),
+      t("calendar.month.short.apr"),
+      t("calendar.month.short.may"),
+      t("calendar.month.short.jun"),
+      t("calendar.month.short.jul"),
+      t("calendar.month.short.aug"),
+      t("calendar.month.short.sep"),
+      t("calendar.month.short.oct"),
+      t("calendar.month.short.nov"),
+      t("calendar.month.short.dec"),
+    ],
+    dayNames: [
+      t("calendar.week.long.sunday"),
+      t("calendar.week.long.monday"),
+      t("calendar.week.long.tuesday"),
+      t("calendar.week.long.wednesday"),
+      t("calendar.week.long.thursday"),
+      t("calendar.week.long.friday"),
+      t("calendar.week.long.saturday"),
+    ],
+    dayNamesShort: [
+      t("calendar.week.short.sun"),
+      t("calendar.week.short.mon"),
+      t("calendar.week.short.tue"),
+      t("calendar.week.short.wed"),
+      t("calendar.week.short.thu"),
+      t("calendar.week.short.fri"),
+      t("calendar.week.short.sat"),
+    ],
+  };
 
   const showHideDatePickerHandler = useCallback(() => {
     bottomSheetModalRef.current?.present();
@@ -75,7 +122,7 @@ export function DateTimePicker({
       .map((num: string) => parseInt(num, 10));
     const date: Date = new Date(year, month - 1, day);
     onChange(date);
-    useButtonFeedback('medium')
+    useButtonFeedback("medium");
     bottomSheetModalRef.current?.close();
   };
 
@@ -111,9 +158,9 @@ export function DateTimePicker({
 
   const renderArrow = (direction: Direction) => {
     if (direction === "left") {
-      return <Text>{"<"}</Text>;
+      return <LeftIcon width={24} height={24} fill={navigateIcon.color} />;
     } else if (direction === "right") {
-      return <Text>{">"}</Text>;
+      return <RightIcon width={24} height={24} fill={navigateIcon.color} />;
     }
     return null;
   };
@@ -128,7 +175,13 @@ export function DateTimePicker({
       >
         {value ? (
           <>
-            <Text style={text}>{formatDate(new Date(value), true)}</Text>
+            <CalendarIcon
+              width={14}
+              height={14}
+              style={icon}
+              fill={haveError ? error.color : text.color}
+            />
+            <Text style={text}>{formatDate(t, new Date(value), true)}</Text>
             <TouchableOpacity
               activeOpacity={0.8}
               style={clear}
@@ -138,7 +191,15 @@ export function DateTimePicker({
             </TouchableOpacity>
           </>
         ) : (
-          <Text style={placeholder}>{placeholderText}</Text>
+          <>
+            <CalendarIcon
+              width={14}
+              height={14}
+              style={icon}
+              fill={placeholder.color}
+            />
+            <Text style={placeholder}>{placeholderText}</Text>
+          </>
         )}
       </TouchableOpacity>
       {haveError && <Text style={error}>{errorMessage}</Text>}
@@ -190,6 +251,7 @@ const styles = (colorScheme: Colors) =>
     wrapper: {
       flex: 1,
       flexDirection: "row",
+      alignItems: "center",
       marginVertical: 14,
       borderRadius: 6,
       backgroundColor: colorScheme.background.secondary,
@@ -200,6 +262,9 @@ const styles = (colorScheme: Colors) =>
       fontFamily: "LatoRegular",
       color: colorScheme.text.primary,
       fontSize: 14,
+    },
+    icon: {
+      marginLeft: 12,
     },
     placeholder: {
       padding: 12,
@@ -245,5 +310,8 @@ const styles = (colorScheme: Colors) =>
       marginHorizontal: 12,
       paddingBottom: 26,
       backgroundColor: colorScheme.background.secondary,
+    },
+    navigateIcon: {
+      color: colorScheme.brand.primary,
     },
   });

@@ -46,7 +46,7 @@ export function RecurrencePicker({
     useState<number>();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const colorScheme = useThemeColor();
-  const { CloseIcon } = useIcon();
+  const { CloseIcon, CalendarIcon } = useIcon();
   const {
     label,
     container,
@@ -54,6 +54,7 @@ export function RecurrencePicker({
     buttonText,
     wrapper,
     text,
+    icon,
     placeholder,
     error,
     errorBackground,
@@ -104,8 +105,13 @@ export function RecurrencePicker({
 
   const getValueHandler = (recurrence?: string, limit?: number): string => {
     if (!recurrence) return "";
-    if (!limit) return `${t("repeatTransaction")} ${t(recurrence)}`;
-    return `${t("repeatTransaction")} ${limit}x ${t(recurrence)}`;
+    if (!limit)
+      return `${t("repeatTransaction")} ${t(
+        `calendar.recurrence.${recurrence}`
+      )}`;
+    return `${t("repeatTransaction")} ${limit}x (${t(
+      `calendar.recurrence.${recurrence}`
+    )})`;
   };
 
   return (
@@ -133,6 +139,12 @@ export function RecurrencePicker({
         <View style={[wrapper, haveError && errorBackground]}>
           {value ? (
             <>
+              <CalendarIcon
+                width={14}
+                height={14}
+                style={icon}
+                fill={haveError ? error.color : text.color}
+              />
               <Text style={text}>
                 {getValueHandler(value.recurrence, value.limit)}
               </Text>
@@ -145,7 +157,15 @@ export function RecurrencePicker({
               </TouchableOpacity>
             </>
           ) : (
-            <Text style={placeholder}>{placeholderText}</Text>
+            <>
+              <CalendarIcon
+                width={14}
+                height={14}
+                style={icon}
+                fill={placeholder.color}
+              />
+              <Text style={placeholder}>{placeholderText}</Text>
+            </>
           )}
         </View>
       </View>
@@ -227,7 +247,7 @@ const styles = (colorScheme: Colors) =>
   StyleSheet.create({
     label: {
       flex: 1,
-      fontFamily: "Poppins-Regular",
+      fontFamily: "PoppinsRegular",
       color: colorScheme.text.secondary,
       fontSize: 16,
     },
@@ -245,7 +265,7 @@ const styles = (colorScheme: Colors) =>
     },
     buttonText: {
       fontSize: 18,
-      fontFamily: "Nunito-Bold",
+      fontFamily: "NunitoBold",
       color: colorScheme.button.tertiary.foreground,
     },
     wrapper: {
@@ -258,20 +278,23 @@ const styles = (colorScheme: Colors) =>
     text: {
       padding: 12,
       flex: 1,
-      fontFamily: "Lato-Regular",
+      fontFamily: "LatoRegular",
       color: colorScheme.text.primary,
       fontSize: 14,
+    },
+    icon: {
+      marginLeft: 12,
     },
     placeholder: {
       padding: 12,
       flex: 1,
-      fontFamily: "Lato-Regular",
+      fontFamily: "LatoRegular",
       color: colorScheme.text.secondary,
       fontSize: 14,
     },
     error: {
       flex: 1,
-      fontFamily: "Poppins-SemiBold",
+      fontFamily: "PoppinsSemiBold",
       color: colorScheme.red.primary,
       fontSize: 12,
       marginBottom: 6,

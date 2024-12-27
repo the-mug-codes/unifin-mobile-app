@@ -55,7 +55,7 @@ const styles = (colorScheme: Colors) =>
     },
     title: {
       flex: 1,
-      fontFamily: "Poppins-SemiBold",
+      fontFamily: "PoppinsSemiBold",
       color: colorScheme.text.invert,
       fontSize: 18,
       marginLeft: 8,

@@ -49,7 +49,7 @@ const styles = (colorScheme: Colors) =>
   StyleSheet.create({
     sectionTitle: {
       flex: 1,
-      fontFamily: "Poppins-Regular",
+      fontFamily: "PoppinsRegular",
       color: colorScheme.text.secondary,
       fontSize: 16,
     },

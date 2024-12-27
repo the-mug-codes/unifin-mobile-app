@@ -1,3 +1,66 @@
 {
-  "myBallance": "Meu saldo"
+  "myBallance": "Meu saldo",
+  "calendar": {
+    "today": "Hoje",
+    "of": "de",
+    "recurrence": {
+      "daily": "diariamente",
+      "weekly": "semanalmente",
+      "biweekly": "quinzenalmente",
+      "monthly": "mensalmente",
+      "quarterly": "trimestralmente",
+      "semiannually": "semestralmente",
+      "annually": "anualmente"
+    },
+    "month": {
+      "long": {
+        "january": "Janeiro",
+        "february": "Fevereiro",
+        "march": "Março",
+        "april": "Abril",
+        "may": "Maio",
+        "june": "Junho",
+        "july": "Julho",
+        "august": "Agosto",
+        "september": "Setembro",
+        "october": "Outubro",
+        "november": "Novembro",
+        "december": "Dezembro"
+      },
+      "short": {
+        "jan": "Jan",
+        "feb": "Fev",
+        "mar": "Mar",
+        "apr": "Abr",
+        "may": "Mai",
+        "jun": "Jun",
+        "jul": "Jul",
+        "aug": "Ago",
+        "sep": "Set",
+        "oct": "Out",
+        "nov": "Nov",
+        "dec": "Dez"
+      }
+    },
+    "week": {
+      "long": {
+        "sunday": "Domingo",
+        "monday": "Segunda-feira",
+        "tuesday": "Terça-feira",
+        "wednesday": "Quarta-feira",
+        "thursday": "Quinta-feira",
+        "friday": "Sexta-feira",
+        "saturday": "Sábado"
+      },
+      "short": {
+        "sun": "Dom",
+        "mon": "Seg",
+        "tue": "Ter",
+        "wed": "Qua",
+        "thu": "Qui",
+        "fri": "Sex",
+        "sat": "Sáb"
+      }
+    }
+  }
 }

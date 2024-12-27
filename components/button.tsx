@@ -95,19 +95,19 @@ const styles = (colorScheme: Colors) =>
     },
     buttonPrimaryText: {
       fontSize: 18,
-      fontFamily: "Nunito-Bold",
+      fontFamily: "NunitoBold",
       marginLeft: 6,
       color: colorScheme.button.primary.foreground,
     },
     buttonSecondaryText: {
       fontSize: 18,
-      fontFamily: "Nunito-Bold",
+      fontFamily: "NunitoBold",
       marginLeft: 6,
       color: colorScheme.button.secondary.foreground,
     },
     buttonTertiaryText: {
       fontSize: 18,
-      fontFamily: "Nunito-Bold",
+      fontFamily: "NunitoBold",
       marginLeft: 6,
       color: colorScheme.button.tertiary.foreground,
     },

@@ -55,7 +55,7 @@ const styles = (colorScheme: Colors) =>
   StyleSheet.create({
     label: {
       flex: 1,
-      fontFamily: "Poppins-Regular",
+      fontFamily: "PoppinsRegular",
       color: colorScheme.text.secondary,
       fontSize: 16,
     },
@@ -65,13 +65,16 @@ const styles = (colorScheme: Colors) =>
       borderRadius: 6,
       padding: 12,
       backgroundColor: colorScheme.background.secondary,
-      fontFamily: "Lato-Regular",
+      fontFamily: "LatoRegular",
       color: colorScheme.text.primary,
       fontSize: 14,
     },
+    icon: {
+      marginLeft: 12,
+    },
     error: {
       flex: 1,
-      fontFamily: "Poppins-SemiBold",
+      fontFamily: "PoppinsSemiBold",
       color: colorScheme.red.primary,
       fontSize: 12,
       marginBottom: 6,

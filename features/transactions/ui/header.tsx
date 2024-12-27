@@ -136,7 +136,7 @@ const styles = (colorScheme: Colors) =>
       marginBottom: 14,
     },
     kindSelectorText: {
-      fontFamily: "Poppins-SemiBold",
+      fontFamily: "PoppinsSemiBold",
       color: colorScheme.text.invert,
       textAlign: "center",
       fontSize: 14,

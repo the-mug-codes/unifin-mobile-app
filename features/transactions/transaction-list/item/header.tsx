@@ -69,23 +69,23 @@ const styles = (colorScheme: Colors, isPositive: boolean) =>
       flex: 1,
     },
     ballanceTitle: {
-      fontFamily: "Poppins-SemiBold",
+      fontFamily: "PoppinsSemiBold",
       color: colorScheme.text.primary,
       fontSize: 18,
     },
     ballanceAmount: {
-      fontFamily: "Nunito-ExtraBold",
+      fontFamily: "NunitoExtraBold",
       color: isPositive ? colorScheme.green.primary : colorScheme.red.primary,
       textAlign: "right",
       fontSize: 24,
     },
     futureTitle: {
-      fontFamily: "Lato-Regular",
+      fontFamily: "LatoRegular",
       color: colorScheme.text.secondary,
       fontSize: 14,
     },
     futureBallanceAmount: {
-      fontFamily: "Nunito-ExtraBold",
+      fontFamily: "NunitoExtraBold",
       color: colorScheme.text.secondary,
       textAlign: "right",
     },

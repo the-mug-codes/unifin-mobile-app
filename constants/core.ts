@@ -3,13 +3,13 @@ import { COLORS } from "@/constants/theme";
 
 const fonts: any = {
   regular: {
-    fontFamily: "Lato-Regular",
+    fontFamily: "LatoRegular",
   },
   bold: {
-    fontFamily: "Lato-Bold",
+    fontFamily: "LatoBold",
   },
   heavy: {
-    fontFamily: "Lato-Black",
+    fontFamily: "LatoBlack",
   },
 };
 

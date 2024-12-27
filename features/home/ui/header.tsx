@@ -155,13 +155,13 @@ const styles = (colorScheme: Colors, ballanceIsPositive: boolean) =>
       fontSize: 14,
       marginBottom: -2,
       color: colorScheme.text.invert,
-      fontFamily: "Poppins-Regular",
+      fontFamily: "PoppinsRegular",
     },
     userInfoName: {
       fontSize: 18,
       marginTop: -2,
       color: colorScheme.text.invert,
-      fontFamily: "Poppins-SemiBold",
+      fontFamily: "PoppinsSemiBold",
     },
     icon: {
       color: colorScheme.brand.secondary,
@@ -183,12 +183,12 @@ const styles = (colorScheme: Colors, ballanceIsPositive: boolean) =>
       overflow: "hidden",
     },
     ballanceTitle: {
-      fontFamily: "Poppins-SemiBold",
+      fontFamily: "PoppinsSemiBold",
       color: colorScheme.text.primary,
       fontSize: 18,
     },
     ballanceAmount: {
-      fontFamily: "Nunito-ExtraBold",
+      fontFamily: "NunitoExtraBold",
       color: ballanceIsPositive
         ? colorScheme.green.primary
         : colorScheme.red.primary,

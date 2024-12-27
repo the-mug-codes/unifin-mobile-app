@@ -124,7 +124,7 @@ const styles = (colorScheme: Colors) =>
     },
     modalSheetActionText: {
       fontSize: 18,
-      fontFamily: "Nunito-Bold",
+      fontFamily: "NunitoBold",
       marginLeft: 6,
       color: colorScheme.button.primary.foreground,
     },

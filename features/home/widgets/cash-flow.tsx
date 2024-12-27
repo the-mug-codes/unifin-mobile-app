@@ -125,7 +125,7 @@ const styles = (colorScheme: Colors) =>
     },
     sectionTitle: {
       flex: 1,
-      fontFamily: "Poppins-Regular",
+      fontFamily: "PoppinsRegular",
       color: colorScheme.text.secondary,
       fontSize: 16,
     },
@@ -153,23 +153,23 @@ const styles = (colorScheme: Colors) =>
     },
     flowItemTitle: {
       textAlign: "center",
-      fontFamily: "Poppins-Regular",
+      fontFamily: "PoppinsRegular",
       color: colorScheme.text.primary,
       fontSize: 16,
     },
     flowItemTitleFuture: {
       textAlign: "center",
-      fontFamily: "Poppins-Regular",
+      fontFamily: "PoppinsRegular",
       color: colorScheme.text.secondary,
       fontSize: 14,
     },
     flowAmount: {
-      fontFamily: "Nunito-ExtraBold",
+      fontFamily: "NunitoExtraBold",
       fontSize: 18,
       textAlign: "center",
     },
     flowAmountFuture: {
-      fontFamily: "Nunito-ExtraBold",
+      fontFamily: "NunitoExtraBold",
       fontSize: 14,
       textAlign: "center",
     },

@@ -1,5 +1,5 @@
 import { DAYS_OF_WEEK, MONTHS } from "@/constants/date-time";
-import { getLocales } from "expo-localization";
+import { TFunctionNonStrict } from "i18next";
 
 export function isToday(date: Date): boolean {
   const now: Date = new Date();
@@ -12,32 +12,23 @@ export function isToday(date: Date): boolean {
   return false;
 }
 
-export function formatDate(date: Date, full: boolean = false): string {
-  let of: string;
-  let today: string;
-  const lang: string = getLocales()[0].languageCode || "en";
-  const daysOfWeek: string[] = DAYS_OF_WEEK[lang];
-  const day = date.getDate();
-  const month = date.getMonth();
-  const year = date.getFullYear();
-  const dayOfWeek = daysOfWeek[date.getDay()];
-  switch (lang) {
-    case "pt":
-      of = "de";
-      today = "hoje";
-      break;
-    default:
-      of = "of";
-      today = "today";
-      break;
-  }
-  return full
-    ? `${isToday(date) ? today : dayOfWeek}, ${day} ${of} ${
-        getMonths()[month]
-      } ${of} ${year}`
-    : `${day} - ${isToday(date) ? today : dayOfWeek}`;
-}
-
-export function getMonths(): string[] {
-  return MONTHS[getLocales()[0].languageCode || "en"];
+export function formatDate(
+  t: TFunctionNonStrict<"translation", undefined>,
+  date: Date,
+  full: boolean = false
+): string {
+  const daysOfWeek: string[] = DAYS_OF_WEEK;
+  const day: number = date.getDate();
+  const month: number = date.getMonth();
+  const year: number = date.getFullYear();
+  const dayOfWeek: string = daysOfWeek[date.getDay()];
+  const getDayOfWeek: string = t(`calendar.week.long.${dayOfWeek}`);
+  const getMonth: string = t(
+    `calendar.month.long.${MONTHS[month]}`
+  ).toLowerCase();
+  const dayPrefix: string = isToday(date) ? t("calendar.today") : getDayOfWeek;
+  const monthPrefix: string = `${day} ${t("calendar.of")} ${getMonth} ${t(
+    "calendar.of"
+  )} ${year}`;
+  return full ? `${dayPrefix}, ${monthPrefix}` : `${day} - ${dayPrefix}`;
 }

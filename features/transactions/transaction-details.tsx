@@ -123,13 +123,13 @@ const styles = (colorScheme: ColorSchemeName) =>
     },
     actionPrimaryText: {
       fontSize: 18,
-      fontFamily: "Nunito-Bold",
+      fontFamily: "NunitoBold",
       marginLeft: 6,
       color: COLORS[colorScheme ?? "light"].button.primary.foreground,
     },
     actionSecondaryText: {
       fontSize: 18,
-      fontFamily: "Nunito-Bold",
+      fontFamily: "NunitoBold",
       marginLeft: 6,
       color: COLORS[colorScheme ?? "light"].button.tertiary.foreground,
     },

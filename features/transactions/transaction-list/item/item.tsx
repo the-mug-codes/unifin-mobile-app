@@ -250,7 +250,7 @@ const styles = (colorScheme: Colors) =>
     },
     dateTitle: {
       flex: 1,
-      fontFamily: "Poppins-Regular",
+      fontFamily: "PoppinsRegular",
       color: colorScheme.text.secondary,
       fontSize: 16,
     },
@@ -262,7 +262,7 @@ const styles = (colorScheme: Colors) =>
       alignSelf: "center",
     },
     ballanceAmount: {
-      fontFamily: "Nunito-ExtraBold",
+      fontFamily: "NunitoExtraBold",
       textAlign: "right",
       fontSize: 14,
     },
@@ -296,11 +296,11 @@ const styles = (colorScheme: Colors) =>
       paddingLeft: 10,
     },
     transactionTitle: {
-      fontFamily: "Poppins-SemiBold",
+      fontFamily: "PoppinsSemiBold",
       fontSize: 14,
     },
     transactionAmount: {
-      fontFamily: "Nunito-ExtraBold",
+      fontFamily: "NunitoExtraBold",
       fontSize: 20,
     },
     transactionAmountIncome: {
@@ -315,7 +315,7 @@ const styles = (colorScheme: Colors) =>
     },
     transactionSubtitle: {
       fontSize: 12,
-      fontFamily: "Lato-Regular",
+      fontFamily: "LatoRegular",
       color: colorScheme.text.secondary,
     },
     transactionSubtitleGreen: {

@@ -1,54 +1,52 @@
-export const MONTHS: { [key: string]: string[] } = {
-  en: [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ],
-  pt: [
-    "Janeiro",
-    "Fevereiro",
-    "Março",
-    "Abril",
-    "Maio",
-    "Junho",
-    "Julho",
-    "Agosto",
-    "Setembro",
-    "Outubro",
-    "Novembro",
-    "Dezembro",
-  ],
-};
+export const MONTHS: string[] = [
+  "january",
+  "february",
+  "march",
+  "april",
+  "may",
+  "june",
+  "july",
+  "august",
+  "september",
+  "october",
+  "november",
+  "december",
+];
 
-export const DAYS_OF_WEEK: { [key: string]: string[] } = {
-  en: [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ],
-  pt: [
-    "domingo",
-    "segunda-feira",
-    "terça-feira",
-    "quarta-feira",
-    "quinta-feira",
-    "sexta-feira",
-    "sábado",
-  ],
-};
+export const MONTHS_SHORT: string[] = [
+  "jan",
+  "feb",
+  "mar",
+  "apr",
+  "may",
+  "jun",
+  "jul",
+  "aug",
+  "sept",
+  "oct",
+  "nov",
+  "dec",
+];
+
+export const DAYS_OF_WEEK: string[] = [
+  "sunday",
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+];
+
+export const DAYS_OF_WEEK_SHORT: string[] = [
+  "sun",
+  "mon",
+  "tue",
+  "wed",
+  "thu",
+  "fri",
+  "sat",
+];
 
 export const RECURRENCE: string[] = [
   "daily",

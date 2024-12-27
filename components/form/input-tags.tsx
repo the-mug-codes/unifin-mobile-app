@@ -87,18 +87,21 @@ export function InputTags<ItemType>({
   errorMessage,
   haveError,
   value,
-  placeholder:placeholderText,
+  placeholder: placeholderText,
   onChange,
   items,
 }: InputTagsProps<ItemType>) {
   const { t } = useTranslation();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const colorScheme = useThemeColor();
-  const { CloseIcon } = useIcon();
+  const { CloseIcon, CalendarIcon } = useIcon();
+
   const {
     label,
     wrapper,
+    text,
     placeholder,
+    icon,
     tag,
     tagText,
     removeTag,
@@ -174,26 +177,42 @@ export function InputTags<ItemType>({
         onPress={showHideDatePickerHandler}
       >
         {value && value?.length ? (
-          getValueHandler(value).map(({ id, value }) => (
-            <TouchableOpacity
-              key={id}
-              activeOpacity={0.8}
-              style={tag}
-              onPress={() => removeItemHandler(id)}
-            >
-              <Text style={[tagText, haveError && error]}>{value}</Text>
-              <CloseIcon
-                width={12}
-                height={12}
-                style={removeTag}
-                fill={removeTag.color}
-              />
-            </TouchableOpacity>
-          ))
+          <>
+            <CalendarIcon
+              width={14}
+              height={14}
+              style={icon}
+              fill={haveError ? error.color : text.color}
+            />
+            {getValueHandler(value).map(({ id, value }) => (
+              <TouchableOpacity
+                key={id}
+                activeOpacity={0.8}
+                style={tag}
+                onPress={() => removeItemHandler(id)}
+              >
+                <Text style={[tagText, haveError && error]}>{value}</Text>
+                <CloseIcon
+                  width={12}
+                  height={12}
+                  style={removeTag}
+                  fill={removeTag.color}
+                />
+              </TouchableOpacity>
+            ))}
+          </>
         ) : (
-          <Text style={[placeholder, haveError && error, { padding: 6 }]}>
-            {placeholderText}
-          </Text>
+          <>
+            <CalendarIcon
+              width={14}
+              height={14}
+              style={icon}
+              fill={placeholder.color}
+            />
+            <Text style={[placeholder, haveError && error, { padding: 6 }]}>
+              {placeholderText}
+            </Text>
+          </>
         )}
       </TouchableOpacity>
       {haveError && <Text style={error}>{errorMessage}</Text>}
@@ -226,7 +245,7 @@ const styles = (colorScheme: Colors) =>
   StyleSheet.create({
     label: {
       flex: 1,
-      fontFamily: "Poppins-Regular",
+      fontFamily: "PoppinsRegular",
       color: colorScheme.text.secondary,
       fontSize: 16,
     },
@@ -239,10 +258,20 @@ const styles = (colorScheme: Colors) =>
       padding: 6,
       backgroundColor: colorScheme.background.secondary,
     },
+    text: {
+      flex: 1,
+      padding: 12,
+      fontFamily: "LatoRegular",
+      color: colorScheme.text.primary,
+      fontSize: 14,
+    },
     placeholder: {
-      fontFamily: "Lato-Regular",
+      fontFamily: "LatoRegular",
       color: colorScheme.text.secondary,
       fontSize: 14,
+    },
+    icon: {
+      marginHorizontal: 6,
     },
     tag: {
       flexDirection: "row",
@@ -255,7 +284,7 @@ const styles = (colorScheme: Colors) =>
       margin: 3,
     },
     tagText: {
-      fontFamily: "Lato-Bold",
+      fontFamily: "LatoBold",
       color: colorScheme.text.invert,
       fontSize: 14,
     },
@@ -265,7 +294,7 @@ const styles = (colorScheme: Colors) =>
     },
     error: {
       flex: 1,
-      fontFamily: "Poppins-SemiBold",
+      fontFamily: "PoppinsSemiBold",
       color: colorScheme.red.primary,
       fontSize: 12,
       marginBottom: 6,
@@ -306,7 +335,7 @@ const styles = (colorScheme: Colors) =>
     },
     itemContentText: {
       fontSize: 18,
-      fontFamily: "Nunito-Bold",
+      fontFamily: "NunitoBold",
       marginLeft: 6,
       color: colorScheme.text.primary,
     },

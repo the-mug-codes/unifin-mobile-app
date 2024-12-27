@@ -104,6 +104,7 @@ export function SelectItemPicker<ItemType>({
     wrapper,
     image,
     text,
+    icon,
     placeholder,
     error,
     errorBackground,
@@ -114,7 +115,7 @@ export function SelectItemPicker<ItemType>({
     clear,
     clearIcon,
   } = styles(colorScheme);
-  const { CloseIcon } = useIcon();
+  const { CloseIcon, CalendarIcon } = useIcon();
 
   const showHideDatePickerHandler = useCallback(() => {
     bottomSheetModalRef.current?.present();
@@ -159,10 +160,17 @@ export function SelectItemPicker<ItemType>({
       >
         {value ? (
           <>
-            {getValueHandler(value).icon && (
+            {getValueHandler(value).icon ? (
               <Image
                 style={image}
                 source={{ uri: getValueHandler(value).icon }}
+              />
+            ) : (
+              <CalendarIcon
+                width={14}
+                height={14}
+                style={icon}
+                fill={haveError ? error.color : text.color}
               />
             )}
             <Text style={[text, haveError && error]}>
@@ -177,9 +185,17 @@ export function SelectItemPicker<ItemType>({
             </TouchableOpacity>
           </>
         ) : (
-          <Text style={[placeholder, haveError && error]}>
-            {placeholderText}
-          </Text>
+          <>
+            <CalendarIcon
+              width={14}
+              height={14}
+              style={icon}
+              fill={placeholder.color}
+            />
+            <Text style={[placeholder, haveError && error]}>
+              {placeholderText}
+            </Text>
+          </>
         )}
       </TouchableOpacity>
       {haveError && <Text style={error}>{errorMessage}</Text>}
@@ -212,7 +228,7 @@ const styles = (colorScheme: Colors) =>
   StyleSheet.create({
     label: {
       flex: 1,
-      fontFamily: "Poppins-Regular",
+      fontFamily: "PoppinsRegular",
       color: colorScheme.text.secondary,
       fontSize: 16,
     },
@@ -233,20 +249,23 @@ const styles = (colorScheme: Colors) =>
     text: {
       flex: 1,
       padding: 12,
-      fontFamily: "Lato-Regular",
+      fontFamily: "LatoRegular",
       color: colorScheme.text.primary,
       fontSize: 14,
+    },
+    icon: {
+      marginLeft: 12,
     },
     placeholder: {
       padding: 12,
       flex: 1,
-      fontFamily: "Lato-Regular",
+      fontFamily: "LatoRegular",
       color: colorScheme.text.secondary,
       fontSize: 14,
     },
     error: {
       flex: 1,
-      fontFamily: "Poppins-SemiBold",
+      fontFamily: "PoppinsSemiBold",
       color: colorScheme.red.primary,
       fontSize: 12,
       marginBottom: 6,
@@ -292,7 +311,7 @@ const styles = (colorScheme: Colors) =>
     },
     itemContentText: {
       fontSize: 18,
-      fontFamily: "Nunito-Bold",
+      fontFamily: "NunitoBold",
       marginLeft: 6,
       color: colorScheme.text.primary,
     },

@@ -81,13 +81,13 @@ const styles = (colorScheme: Colors, balancePositive: boolean) =>
       justifyContent: "center",
     },
     ballanceTitle: {
-      fontFamily: "Poppins-SemiBold",
+      fontFamily: "PoppinsSemiBold",
       color: colorScheme.text.primary,
       textAlign: "right",
       fontSize: 18,
     },
     ballanceAmount: {
-      fontFamily: "Nunito-ExtraBold",
+      fontFamily: "NunitoExtraBold",
       color: balancePositive
         ? colorScheme.green.primary
         : colorScheme.red.primary,
@@ -95,12 +95,12 @@ const styles = (colorScheme: Colors, balancePositive: boolean) =>
       fontSize: 24,
     },
     transactionsTitle: {
-      fontFamily: "Lato-Regular",
+      fontFamily: "LatoRegular",
       color: colorScheme.text.secondary,
       fontSize: 14,
     },
     transactionsAmount: {
-      fontFamily: "Nunito-ExtraBold",
+      fontFamily: "NunitoExtraBold",
       fontSize: 12,
     },
     transactionsAmountIncome: {

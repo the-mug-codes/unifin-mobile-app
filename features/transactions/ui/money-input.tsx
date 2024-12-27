@@ -57,7 +57,7 @@ const styles = (colorScheme: Colors) =>
   StyleSheet.create({
     moneyAmount: {
       color: colorScheme.text.invert,
-      fontFamily: "Nunito-ExtraBold",
+      fontFamily: "NunitoExtraBold",
       textAlign: "right",
       fontSize: 32,
       padding: 12,

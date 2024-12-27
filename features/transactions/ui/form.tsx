@@ -126,7 +126,7 @@ function Form({ onSubmit }: FormProps, ref: Ref<FormRef>) {
       amount: 0,
       isPaid: false,
       categoryID: undefined,
-      tagsIDs: undefined,
+      tagsIDs: [],
       notes: undefined,
       repeat: undefined,
     },

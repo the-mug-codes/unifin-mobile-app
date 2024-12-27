@@ -1,19 +1,22 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import Icon from "@expo/vector-icons/MaterialIcons";
+import { useTranslation } from "react-i18next";
 
 import { useButtonFeedback } from "@/hooks/use-button-feedback";
 import { useThemeColor } from "@/hooks/use-theme-color";
+import { useIcon } from "@/hooks/use-icon";
 
 import { Colors } from "@/constants/theme";
-import { getMonths } from "@/utils/date-parser";
+import { MONTHS } from "@/constants/date-time";
 
 interface MonthViewSelectionProps {
   selectedDate: (newDate: Date) => void;
 }
 export function MonthViewSelection({ selectedDate }: MonthViewSelectionProps) {
+  const { t } = useTranslation();
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+  const { LeftIcon, RightIcon } = useIcon();
   const colorScheme = useThemeColor();
 
   const { container, info, monthText, yearText, navigator, icon } =
@@ -46,17 +49,17 @@ export function MonthViewSelection({ selectedDate }: MonthViewSelectionProps) {
   return (
     <View style={container}>
       <TouchableOpacity style={navigator} onPress={previousMonthHandler}>
-        <Icon name="chevron-left" size={32} style={icon} />
+        <LeftIcon width={24} height={24} fill={icon.color} />
       </TouchableOpacity>
       <View style={info}>
-        <Text style={monthText}>{getMonths()[currentMonth]}</Text>
-        {getMonths()[currentMonth]}
+        <Text style={monthText}>{t(MONTHS[currentMonth])}</Text>
+        {t(MONTHS[currentMonth])}
         {currentYear != new Date().getFullYear() && (
           <Text style={yearText}>{currentYear}</Text>
         )}
       </View>
       <TouchableOpacity style={navigator} onPress={nextMonthHandler}>
-        <Icon name="chevron-right" size={32} style={icon} />
+        <RightIcon width={24} height={24} fill={icon.color} />
       </TouchableOpacity>
     </View>
   );
