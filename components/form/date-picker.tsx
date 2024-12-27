@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useRef } from "react";
 import {
   Text,
   StyleSheet,
@@ -8,8 +8,13 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { getLocales } from "expo-localization";
+import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
+import {
+  Calendar,
+  CalendarList,
+  Agenda,
+  DateData,
+} from "react-native-calendars";
 import { useTranslation } from "react-i18next";
 
 import { useThemeColor } from "@/hooks/use-theme-color";
@@ -18,6 +23,8 @@ import { useIcon } from "@/hooks/use-icon";
 import { Colors } from "@/constants/theme";
 
 import { formatDate } from "@/utils/date-parser";
+import { Direction, MarkedDates } from "react-native-calendars/src/types";
+import { useButtonFeedback } from "@/hooks/use-button-feedback";
 
 interface DateTimePickerProps {
   label: string;
@@ -40,8 +47,7 @@ export function DateTimePicker({
   mode = "date",
 }: DateTimePickerProps) {
   const { t } = useTranslation();
-  const [isDatePickerVisible, setDatePickerVisibility] =
-    useState<boolean>(false);
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const colorScheme = useThemeColor();
   const {
     label,
@@ -52,16 +58,25 @@ export function DateTimePicker({
     errorBackground,
     clear,
     clearIcon,
+    contentContainer,
+    modalSheetHandle,
+    modalSheetHandleArea,
+    modalSheetView,
   } = styles(colorScheme);
   const { CloseIcon } = useIcon();
 
-  const showHideDatePickerHandler = () => {
-    setDatePickerVisibility((value: boolean) => !value);
-  };
+  const showHideDatePickerHandler = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
 
-  const selectDateHandler = (date: Date) => {
+  const selectDateHandler = ({ dateString }: DateData) => {
+    const [year, month, day] = dateString
+      .split("-")
+      .map((num: string) => parseInt(num, 10));
+    const date: Date = new Date(year, month - 1, day);
     onChange(date);
-    setDatePickerVisibility(false);
+    useButtonFeedback('medium')
+    bottomSheetModalRef.current?.close();
   };
 
   const clearValuesHandler = () => {
@@ -78,6 +93,29 @@ export function DateTimePicker({
         },
       },
     ]);
+  };
+
+  const getValueHandler = (date?: Date): MarkedDates | undefined => {
+    if (!date) return;
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return {
+      [`${year}-${month}-${day}`]: {
+        selected: true,
+        selectedColor: colorScheme.brand.primary,
+        selectedTextColor: colorScheme.text.invert,
+      },
+    };
+  };
+
+  const renderArrow = (direction: Direction) => {
+    if (direction === "left") {
+      return <Text>{"<"}</Text>;
+    } else if (direction === "right") {
+      return <Text>{">"}</Text>;
+    }
+    return null;
   };
 
   return (
@@ -102,19 +140,41 @@ export function DateTimePicker({
         ) : (
           <Text style={placeholder}>{placeholderText}</Text>
         )}
-        <DateTimePickerModal
-          isVisible={isDatePickerVisible}
-          locale={getLocales()[0].languageTag}
-          mode={mode}
-          confirmTextIOS={t("select")}
-          cancelTextIOS={t("cancel")}
-          onConfirm={(date) => {
-            selectDateHandler(date);
-          }}
-          onCancel={showHideDatePickerHandler}
-        />
       </TouchableOpacity>
       {haveError && <Text style={error}>{errorMessage}</Text>}
+      <BottomSheetModal
+        key={labelText}
+        ref={bottomSheetModalRef}
+        style={modalSheetView}
+        handleIndicatorStyle={modalSheetHandle}
+        handleStyle={modalSheetHandleArea}
+        enablePanDownToClose
+      >
+        <BottomSheetView style={contentContainer}>
+          <Calendar
+            renderArrow={renderArrow}
+            onDayPress={selectDateHandler}
+            enableSwipeMonths
+            markedDates={getValueHandler(value)}
+            theme={{
+              textMonthFontFamily: "PoppinsMedium",
+              textMonthFontSize: 18,
+              monthTextColor: colorScheme.text.primary,
+              textDayHeaderFontFamily: "PoppinsMedium",
+              textDayHeaderFontSize: 12,
+              textSectionTitleColor: colorScheme.text.secondary,
+              textDayFontFamily: "PoppinsMedium",
+              textDayFontSize: 14,
+              todayTextColor: colorScheme.text.invert,
+              todayBackgroundColor: colorScheme.brand.secondary,
+              dayTextColor: colorScheme.text.primary,
+              textDisabledColor: colorScheme.text.secondary,
+              backgroundColor: colorScheme.background.secondary,
+              calendarBackground: colorScheme.background.secondary,
+            }}
+          />
+        </BottomSheetView>
+      </BottomSheetModal>
     </View>
   );
 }
@@ -123,7 +183,7 @@ const styles = (colorScheme: Colors) =>
   StyleSheet.create({
     label: {
       flex: 1,
-      fontFamily: "Poppins-Regular",
+      fontFamily: "PoppinsRegular",
       color: colorScheme.text.secondary,
       fontSize: 16,
     },
@@ -137,20 +197,20 @@ const styles = (colorScheme: Colors) =>
     text: {
       flex: 1,
       padding: 12,
-      fontFamily: "Lato-Regular",
+      fontFamily: "LatoRegular",
       color: colorScheme.text.primary,
       fontSize: 14,
     },
     placeholder: {
       padding: 12,
       flex: 1,
-      fontFamily: "Lato-Regular",
+      fontFamily: "LatoRegular",
       color: colorScheme.text.secondary,
       fontSize: 14,
     },
     error: {
       flex: 1,
-      fontFamily: "Poppins-SemiBold",
+      fontFamily: "PoppinsSemiBold",
       color: colorScheme.red.primary,
       fontSize: 12,
       marginBottom: 6,
@@ -164,5 +224,26 @@ const styles = (colorScheme: Colors) =>
     },
     clearIcon: {
       color: colorScheme.text.secondary,
+    },
+    modalSheetView: {
+      borderTopStartRadius: 6,
+      borderTopEndRadius: 6,
+      elevation: 3,
+      shadowColor: "#333333",
+      shadowOffset: { width: 0, height: 12 },
+      shadowOpacity: 0.6,
+      shadowRadius: 12,
+      backgroundColor: colorScheme.background.secondary,
+    },
+    modalSheetHandleArea: {
+      backgroundColor: colorScheme.background.secondary,
+    },
+    modalSheetHandle: {
+      backgroundColor: colorScheme.brand.primary,
+    },
+    contentContainer: {
+      marginHorizontal: 12,
+      paddingBottom: 26,
+      backgroundColor: colorScheme.background.secondary,
     },
   });

@@ -83,14 +83,14 @@ const styles = (colorScheme: Colors) =>
       flex: 1,
     },
     monthText: {
-      fontFamily: "Poppins-Medium",
+      fontFamily: "PoppinsMedium",
       color: colorScheme.text.primary,
       textAlign: "center",
       fontSize: 18,
     },
     yearText: {
-      fontFamily: "Poppins-Regular",
-      color: colorScheme.text.primary,
+      fontFamily: "PoppinsRegular",
+      color: colorScheme.text.secondary,
       textAlign: "center",
       fontSize: 12,
       marginTop: -2.5,

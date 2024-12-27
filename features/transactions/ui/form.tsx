@@ -149,9 +149,7 @@ function Form({ onSubmit }: FormProps, ref: Ref<FormRef>) {
                 value={value}
                 haveError={!!errors.date}
                 errorMessage={errors.date?.message}
-                onChange={(value?: Date) =>
-                  onChange(value ? value.toISOString() : undefined)
-                }
+                onChange={onChange}
               />
             )}
           />
