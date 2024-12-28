@@ -7,6 +7,7 @@ import {
   StyleProp,
   TextInput,
 } from "react-native";
+import { SvgProps } from "react-native-svg";
 
 import { useThemeColor } from "@/hooks/use-theme-color";
 
@@ -18,6 +19,7 @@ interface InputTextProps {
   style?: StyleProp<ViewStyle>;
   value?: string;
   placeholder?: string;
+  icon?: React.FC<SvgProps>;
   haveError?: boolean;
   errorMessage?: string;
 }
@@ -27,25 +29,53 @@ export function InputText({
   errorMessage,
   haveError,
   value,
-  placeholder,
+  icon: Icon,
+  placeholder: placeholderText,
   onChange,
 }: InputTextProps) {
   useState<boolean>(false);
   const colorScheme = useThemeColor();
-  const { label, input, error, errorBackground } = styles(colorScheme);
+  const { label, wrapper, icon, input, placeholder, error, errorBackground } =
+    styles(colorScheme);
 
   return (
     <View style={style}>
       <Text style={label}>{labelText}</Text>
-      <TextInput
-        style={[input, haveError && errorBackground]}
-        placeholder={placeholder}
-        placeholderTextColor={
-          haveError ? error.color : colorScheme.text.secondary
-        }
-        value={value}
-        onChangeText={onChange}
-      />
+      <View style={[wrapper, haveError && errorBackground]}>
+        {value ? (
+          <>
+            {Icon && (
+              <Icon
+                width={14}
+                height={14}
+                style={icon}
+                fill={placeholder.color}
+              />
+            )}
+            <TextInput
+              style={[input, haveError && error]}
+              onChangeText={onChange}
+              value={value}
+            />
+          </>
+        ) : (
+          <>
+            {Icon && (
+              <Icon
+                width={14}
+                height={14}
+                style={icon}
+                fill={placeholder.color}
+              />
+            )}
+            <TextInput
+              style={[placeholder, haveError && error]}
+              placeholder={placeholderText}
+              onChangeText={onChange}
+            />
+          </>
+        )}
+      </View>
       {haveError && <Text style={error}>{errorMessage}</Text>}
     </View>
   );
@@ -59,18 +89,30 @@ const styles = (colorScheme: Colors) =>
       color: colorScheme.text.secondary,
       fontSize: 16,
     },
-    input: {
+    wrapper: {
       flex: 1,
+      flexDirection: "row",
+      alignItems: "center",
       marginVertical: 14,
       borderRadius: 6,
-      padding: 12,
       backgroundColor: colorScheme.background.secondary,
+    },
+    input: {
+      flex: 1,
+      padding: 12,
       fontFamily: "LatoRegular",
       color: colorScheme.text.primary,
       fontSize: 14,
     },
     icon: {
       marginLeft: 12,
+    },
+    placeholder: {
+      padding: 12,
+      flex: 1,
+      fontFamily: "LatoRegular",
+      color: colorScheme.text.secondary,
+      fontSize: 14,
     },
     error: {
       flex: 1,

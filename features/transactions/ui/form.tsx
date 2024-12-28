@@ -6,6 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 import { useThemeColor } from "@/hooks/use-theme-color";
+import { useIcon } from "@/hooks/use-icon";
 
 import { DateTimePicker } from "@/components/form/date-picker";
 import { InputTags } from "@/components/form/input-tags";
@@ -35,6 +36,7 @@ interface FormProps {
 function Form({ onSubmit }: FormProps, ref: Ref<FormRef>) {
   const { t } = useTranslation();
   const colorScheme = useThemeColor();
+  const { ActionIcon, CalendarIcon, NoteIcon, RepeatIcon, CategoryIcon ,TagIcon } = useIcon();
   const { container, cols, col, marginLeft, marginRight } =
     stylesForm(colorScheme);
 
@@ -146,6 +148,7 @@ function Form({ onSubmit }: FormProps, ref: Ref<FormRef>) {
             render={({ field: { onChange, value } }) => (
               <DateTimePicker
                 label={t("date")}
+                icon={CalendarIcon}
                 value={value}
                 haveError={!!errors.date}
                 errorMessage={errors.date?.message}
@@ -176,6 +179,7 @@ function Form({ onSubmit }: FormProps, ref: Ref<FormRef>) {
         render={({ field: { onChange, value } }) => (
           <SelectItemPicker<any>
             label={t("account")}
+            icon={ActionIcon}
             items={mapToItemModel(
               [
                 {
@@ -212,6 +216,7 @@ function Form({ onSubmit }: FormProps, ref: Ref<FormRef>) {
         render={({ field: { onChange, value } }) => (
           <InputText
             label={t("description")}
+            icon={NoteIcon}
             placeholder="descrição da transação"
             value={value}
             haveError={!!errors.description}
@@ -226,6 +231,7 @@ function Form({ onSubmit }: FormProps, ref: Ref<FormRef>) {
         render={({ field: { onChange, value } }) => (
           <SelectItemPicker<any>
             label={t("category")}
+            icon={CategoryIcon}
             items={mapToItemModel(
               [
                 {
@@ -258,6 +264,7 @@ function Form({ onSubmit }: FormProps, ref: Ref<FormRef>) {
         render={({ field: { onChange, value } }) => (
           <RecurrencePicker
             label={t("repeat")}
+            icon={RepeatIcon}
             value={value}
             placeholder={t("selectOption")}
             haveError={!!errors.repeat}
@@ -274,6 +281,7 @@ function Form({ onSubmit }: FormProps, ref: Ref<FormRef>) {
         render={({ field: { onChange, value } }) => (
           <InputTags<any>
             label={t("tags")}
+            icon={TagIcon}
             items={mapToItemModel(
               [
                 {
@@ -310,6 +318,7 @@ function Form({ onSubmit }: FormProps, ref: Ref<FormRef>) {
         render={({ field: { onChange, value } }) => (
           <InputTextArea
             label={t("notes")}
+            icon={NoteIcon}
             placeholder="descrição da transação"
             value={value}
             haveError={!!errors.notes}

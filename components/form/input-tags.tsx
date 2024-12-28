@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { useTranslation } from "react-i18next";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
+import { SvgProps } from "react-native-svg";
 import { FlashList } from "@shopify/flash-list";
 
 import { useThemeColor } from "@/hooks/use-theme-color";
@@ -77,6 +78,7 @@ interface InputTagsProps<ItemType> {
   onChange: (value: ItemType[]) => void;
   style?: StyleProp<ViewStyle>;
   value?: string[];
+  icon?: React.FC<SvgProps>;
   placeholder?: string;
   haveError?: boolean;
   errorMessage?: string;
@@ -87,6 +89,7 @@ export function InputTags<ItemType>({
   errorMessage,
   haveError,
   value,
+  icon: Icon,
   placeholder: placeholderText,
   onChange,
   items,
@@ -94,7 +97,7 @@ export function InputTags<ItemType>({
   const { t } = useTranslation();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const colorScheme = useThemeColor();
-  const { CloseIcon, CalendarIcon } = useIcon();
+  const { CloseIcon } = useIcon();
 
   const {
     label,
@@ -178,12 +181,14 @@ export function InputTags<ItemType>({
       >
         {value && value?.length ? (
           <>
-            <CalendarIcon
-              width={14}
-              height={14}
-              style={icon}
-              fill={haveError ? error.color : text.color}
-            />
+            {Icon && (
+              <Icon
+                width={14}
+                height={14}
+                style={icon}
+                fill={haveError ? error.color : text.color}
+              />
+            )}
             {getValueHandler(value).map(({ id, value }) => (
               <TouchableOpacity
                 key={id}
@@ -203,12 +208,14 @@ export function InputTags<ItemType>({
           </>
         ) : (
           <>
-            <CalendarIcon
-              width={14}
-              height={14}
-              style={icon}
-              fill={placeholder.color}
-            />
+            {Icon && (
+              <Icon
+                width={14}
+                height={14}
+                style={icon}
+                fill={placeholder.color}
+              />
+            )}
             <Text style={[placeholder, haveError && error, { padding: 6 }]}>
               {placeholderText}
             </Text>

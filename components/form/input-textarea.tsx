@@ -7,6 +7,7 @@ import {
   StyleProp,
   TextInput,
 } from "react-native";
+import { SvgProps } from "react-native-svg";
 
 import { useThemeColor } from "@/hooks/use-theme-color";
 
@@ -17,10 +18,10 @@ interface InputTextAreaProps {
   onChange: (text: string) => void;
   style?: StyleProp<ViewStyle>;
   value?: string;
+  icon?: React.FC<SvgProps>;
   placeholder?: string;
   haveError?: boolean;
   errorMessage?: string;
-  numberOfLines?: number;
 }
 export function InputTextArea({
   style,
@@ -28,28 +29,57 @@ export function InputTextArea({
   errorMessage,
   haveError,
   value,
-  placeholder,
+  icon: Icon,
+  placeholder: placeholderText,
   onChange,
-  numberOfLines = 3,
 }: InputTextAreaProps) {
   useState<boolean>(false);
   const colorScheme = useThemeColor();
-  const { label, input, error, errorBackground } = styles(colorScheme);
+  const { label, wrapper, icon, input, placeholder, error, errorBackground } =
+    styles(colorScheme);
 
   return (
     <View style={style}>
       <Text style={label}>{labelText}</Text>
-      <TextInput
-        style={[input, haveError && errorBackground]}
-        placeholder={placeholder}
-        multiline
-        numberOfLines={numberOfLines}
-        placeholderTextColor={
-          haveError ? error.color : colorScheme.text.secondary
-        }
-        value={value}
-        onChangeText={onChange}
-      />
+      <View style={[wrapper, haveError && errorBackground]}>
+        {value ? (
+          <>
+            {Icon && (
+              <Icon
+                width={14}
+                height={14}
+                style={icon}
+                fill={placeholder.color}
+              />
+            )}
+            <TextInput
+              style={[input, haveError && error]}
+              onChangeText={onChange}
+              value={value}
+              multiline
+              numberOfLines={3}
+            />
+          </>
+        ) : (
+          <>
+            {Icon && (
+              <Icon
+                width={14}
+                height={14}
+                style={icon}
+                fill={placeholder.color}
+              />
+            )}
+            <TextInput
+              style={[placeholder, haveError && error]}
+              placeholder={placeholderText}
+              onChangeText={onChange}
+              multiline
+              numberOfLines={3}
+            />
+          </>
+        )}
+      </View>
       {haveError && <Text style={error}>{errorMessage}</Text>}
     </View>
   );
@@ -63,18 +93,31 @@ const styles = (colorScheme: Colors) =>
       color: colorScheme.text.secondary,
       fontSize: 16,
     },
-    input: {
+    wrapper: {
       flex: 1,
+      flexDirection: "row",
       marginVertical: 14,
       borderRadius: 6,
-      padding: 12,
       backgroundColor: colorScheme.background.secondary,
+    },
+    input: {
+      flex: 1,
+      padding: 12,
       fontFamily: "LatoRegular",
       color: colorScheme.text.primary,
       fontSize: 14,
     },
     icon: {
       marginLeft: 12,
+      marginTop: 12,
+      alignSelf: "flex-start",
+    },
+    placeholder: {
+      padding: 12,
+      flex: 1,
+      fontFamily: "LatoRegular",
+      color: colorScheme.text.secondary,
+      fontSize: 14,
     },
     error: {
       flex: 1,

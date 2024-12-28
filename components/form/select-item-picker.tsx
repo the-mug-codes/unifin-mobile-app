@@ -17,6 +17,7 @@ import { useThemeColor } from "@/hooks/use-theme-color";
 import { useIcon } from "@/hooks/use-icon";
 
 import { Colors } from "@/constants/theme";
+import { SvgProps } from "react-native-svg";
 
 export function mapToItemModel<ItemType>(
   items: any[],
@@ -77,18 +78,20 @@ function Item<ItemType>({ item, onPress }: ItemProps<ItemType>) {
 }
 
 interface SelectItemPickerProps<ItemType> {
-  label: string;
   items: ItemModel<ItemType>[];
-  onChange: (value?: ItemType) => void;
+  label: string;
   style?: StyleProp<ViewStyle>;
   value?: string;
+  icon?: React.FC<SvgProps>;
   placeholder?: string;
   haveError?: boolean;
   errorMessage?: string;
+  onChange: (value?: ItemType) => void;
 }
 export function SelectItemPicker<ItemType>({
   style,
   label: labelText,
+  icon: Icon,
   errorMessage,
   haveError,
   value,
@@ -115,7 +118,7 @@ export function SelectItemPicker<ItemType>({
     clear,
     clearIcon,
   } = styles(colorScheme);
-  const { CloseIcon, CalendarIcon } = useIcon();
+  const { CloseIcon } = useIcon();
 
   const showHideDatePickerHandler = useCallback(() => {
     bottomSheetModalRef.current?.present();
@@ -166,12 +169,14 @@ export function SelectItemPicker<ItemType>({
                 source={{ uri: getValueHandler(value).icon }}
               />
             ) : (
-              <CalendarIcon
-                width={14}
-                height={14}
-                style={icon}
-                fill={haveError ? error.color : text.color}
-              />
+              Icon && (
+                <Icon
+                  width={14}
+                  height={14}
+                  style={icon}
+                  fill={text.color}
+                />
+              )
             )}
             <Text style={[text, haveError && error]}>
               {getValueHandler(value).value}
@@ -186,12 +191,14 @@ export function SelectItemPicker<ItemType>({
           </>
         ) : (
           <>
-            <CalendarIcon
-              width={14}
-              height={14}
-              style={icon}
-              fill={placeholder.color}
-            />
+            {Icon && (
+              <Icon
+                width={14}
+                height={14}
+                style={icon}
+                fill={placeholder.color}
+              />
+            )}
             <Text style={[placeholder, haveError && error]}>
               {placeholderText}
             </Text>

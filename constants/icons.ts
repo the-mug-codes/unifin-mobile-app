@@ -24,6 +24,10 @@ import AddIcon from "@/assets/images/icons/add.svg";
 import CloseIcon from "@/assets/images/icons/close.svg";
 import LeftIcon from "@/assets/images/icons/left.svg";
 import RightIcon from "@/assets/images/icons/right.svg";
+import NoteIcon from "@/assets/images/icons/note.svg";
+import RepeatIcon from "@/assets/images/icons/repeat.svg";
+import CategoryIcon from "@/assets/images/icons/category.svg";
+import TagIcon from "@/assets/images/icons/tag.svg";
 
 export type Icon =
   | "ActionIcon"
@@ -49,7 +53,11 @@ export type Icon =
   | "AddIcon"
   | "CloseIcon"
   | "LeftIcon"
-  | "RightIcon";
+  | "RightIcon"
+  | "NoteIcon"
+  | "RepeatIcon"
+  | "CategoryIcon"
+  | "TagIcon";
 export const ICONS: { [key: string]: FC<SvgProps> } = {
   ActionIcon,
   CalendarIcon,
@@ -75,4 +83,8 @@ export const ICONS: { [key: string]: FC<SvgProps> } = {
   CloseIcon,
   LeftIcon,
   RightIcon,
+  NoteIcon,
+  RepeatIcon,
+  CategoryIcon,
+  TagIcon,
 };

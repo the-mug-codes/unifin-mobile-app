@@ -11,6 +11,7 @@ import {
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { Calendar, DateData, LocaleConfig } from "react-native-calendars";
 import { useTranslation } from "react-i18next";
+import { SvgProps } from "react-native-svg";
 
 import { useThemeColor } from "@/hooks/use-theme-color";
 import { useIcon } from "@/hooks/use-icon";
@@ -27,6 +28,7 @@ interface DateTimePickerProps {
   style?: StyleProp<ViewStyle>;
   value?: Date;
   placeholder?: string;
+  icon?: React.FC<SvgProps>;
   haveError?: boolean;
   errorMessage?: string;
   mode?: "date" | "time" | "datetime";
@@ -37,6 +39,7 @@ export function DateTimePicker({
   errorMessage,
   haveError,
   value,
+  icon: Icon,
   placeholder: placeholderText,
   onChange,
   mode = "date",
@@ -44,7 +47,7 @@ export function DateTimePicker({
   const { t } = useTranslation();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const colorScheme = useThemeColor();
-  const { LeftIcon, RightIcon, CalendarIcon } = useIcon();
+  const { LeftIcon, RightIcon } = useIcon();
   const {
     label,
     wrapper,
@@ -175,12 +178,14 @@ export function DateTimePicker({
       >
         {value ? (
           <>
-            <CalendarIcon
-              width={14}
-              height={14}
-              style={icon}
-              fill={haveError ? error.color : text.color}
-            />
+            {Icon && (
+              <Icon
+                width={14}
+                height={14}
+                style={icon}
+                fill={haveError ? error.color : text.color}
+              />
+            )}
             <Text style={text}>{formatDate(t, new Date(value), true)}</Text>
             <TouchableOpacity
               activeOpacity={0.8}
@@ -192,12 +197,14 @@ export function DateTimePicker({
           </>
         ) : (
           <>
-            <CalendarIcon
-              width={14}
-              height={14}
-              style={icon}
-              fill={placeholder.color}
-            />
+            {Icon && (
+              <Icon
+                width={14}
+                height={14}
+                style={icon}
+                fill={placeholder.color}
+              />
+            )}
             <Text style={placeholder}>{placeholderText}</Text>
           </>
         )}

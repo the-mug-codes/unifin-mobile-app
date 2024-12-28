@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { useTranslation } from "react-i18next";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
+import { SvgProps } from "react-native-svg";
 import { Picker } from "@react-native-picker/picker";
 
 import { useThemeColor } from "@/hooks/use-theme-color";
@@ -27,6 +28,7 @@ interface RecurrencePickerProps {
   style?: StyleProp<ViewStyle>;
   value?: { recurrence?: string; limit?: number };
   placeholder?: string;
+  icon?: React.FC<SvgProps>;
   haveError?: boolean;
   errorMessage?: string;
 }
@@ -36,6 +38,7 @@ export function RecurrencePicker({
   errorMessage,
   haveError,
   value,
+  icon: Icon,
   placeholder: placeholderText,
   onChange,
 }: RecurrencePickerProps) {
@@ -46,7 +49,7 @@ export function RecurrencePicker({
     useState<number>();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const colorScheme = useThemeColor();
-  const { CloseIcon, CalendarIcon } = useIcon();
+  const { CloseIcon } = useIcon();
   const {
     label,
     container,
@@ -139,12 +142,14 @@ export function RecurrencePicker({
         <View style={[wrapper, haveError && errorBackground]}>
           {value ? (
             <>
-              <CalendarIcon
-                width={14}
-                height={14}
-                style={icon}
-                fill={haveError ? error.color : text.color}
-              />
+              {Icon && (
+                <Icon
+                  width={14}
+                  height={14}
+                  style={icon}
+                  fill={haveError ? error.color : text.color}
+                />
+              )}
               <Text style={text}>
                 {getValueHandler(value.recurrence, value.limit)}
               </Text>
@@ -158,12 +163,14 @@ export function RecurrencePicker({
             </>
           ) : (
             <>
-              <CalendarIcon
-                width={14}
-                height={14}
-                style={icon}
-                fill={placeholder.color}
-              />
+              {Icon && (
+                <Icon
+                  width={14}
+                  height={14}
+                  style={icon}
+                  fill={placeholder.color}
+                />
+              )}
               <Text style={placeholder}>{placeholderText}</Text>
             </>
           )}
