@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Children, ReactNode, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -12,16 +12,15 @@ import {
 import { useButtonFeedback } from "@/hooks/use-button-feedback";
 import { useThemeColor } from "@/hooks/use-theme-color";
 
-import MoneyInput from "@/features/transactions/ui/money-input";
-
 import { Colors } from "@/constants/theme";
 
 import { TransactionKind } from "@/model/transaction";
 
 interface HeaderProps {
   kind: TransactionKind;
+  children: ReactNode;
 }
-export default function Header({ kind }: HeaderProps) {
+export default function Header({ kind, children }: HeaderProps) {
   const [kindSelected, setKindSelected] = useState<TransactionKind>(kind);
   const colorScheme = useThemeColor();
   const {
@@ -102,7 +101,7 @@ export default function Header({ kind }: HeaderProps) {
             />
           </TouchableOpacity>
         </View>
-        <MoneyInput />
+        {children}
       </SafeAreaView>
     </View>
   );

@@ -1,5 +1,11 @@
 {
   "myBallance": "My ballance",
+  "errors": {
+    "required": "This field is required.",
+    "invalid": "The value entered is invalid.",
+    "notZero": "The value cannot be zero.",
+    "outFromLimitChars": "The value exceeds the allowed character limit."
+  },
   "calendar": {
     "today": "Today",
     "of": "of",
@@ -28,18 +34,18 @@
         "december": "December"
       },
       "short": {
-        "jan": "Jan",
-        "feb": "Feb",
-        "mar": "Mar",
-        "apr": "Apr",
+        "january": "Jan",
+        "february": "Feb",
+        "march": "Mar",
+        "april": "Apr",
         "may": "May",
-        "jun": "Jun",
-        "jul": "Jul",
-        "aug": "Aug",
-        "sep": "Sep",
-        "oct": "Oct",
-        "nov": "Nov",
-        "dec": "Dec"
+        "june": "Jun",
+        "july": "Jul",
+        "august": "Aug",
+        "september": "Sep",
+        "october": "Oct",
+        "november": "Nov",
+        "december": "Dec"
       }
     },
     "week": {
@@ -53,13 +59,13 @@
         "saturday": "Saturday"
       },
       "short": {
-        "sun": "Sun",
-        "mon": "Mon",
-        "tue": "Tue",
-        "wed": "Wed",
-        "thu": "Thu",
-        "fri": "Fri",
-        "sat": "Sat"
+        "sunday": "Sun",
+        "monday": "Mon",
+        "tuesday": "Tue",
+        "wednesday": "Wed",
+        "thursday": "Thu",
+        "friday": "Fri",
+        "saturday": "Sat"
       }
     }
   }

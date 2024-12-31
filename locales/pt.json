@@ -1,5 +1,11 @@
 {
   "myBallance": "Meu saldo",
+  "errors": {
+    "required": "Este campo é obrigatório.",
+    "invalid": "O valor informado é inválido.",
+    "notZero": "O valor não pode ser zero.",
+    "outFromLimitChars": "O valor excede o limite de caracteres permitido."
+  },
   "calendar": {
     "today": "Hoje",
     "of": "de",
@@ -28,18 +34,18 @@
         "december": "Dezembro"
       },
       "short": {
-        "jan": "Jan",
-        "feb": "Fev",
-        "mar": "Mar",
-        "apr": "Abr",
+        "january": "Jan",
+        "february": "Fev",
+        "march": "Mar",
+        "april": "Abr",
         "may": "Mai",
-        "jun": "Jun",
-        "jul": "Jul",
-        "aug": "Ago",
-        "sep": "Set",
-        "oct": "Out",
-        "nov": "Nov",
-        "dec": "Dez"
+        "june": "Jun",
+        "july": "Jul",
+        "august": "Ago",
+        "september": "Set",
+        "october": "Out",
+        "november": "Nov",
+        "december": "Dez"
       }
     },
     "week": {
@@ -53,13 +59,13 @@
         "saturday": "Sábado"
       },
       "short": {
-        "sun": "Dom",
-        "mon": "Seg",
-        "tue": "Ter",
-        "wed": "Qua",
-        "thu": "Qui",
-        "fri": "Sex",
-        "sat": "Sáb"
+        "sunday": "Dom",
+        "monday": "Seg",
+        "tuesday": "Ter",
+        "wednesday": "Qua",
+        "thursday": "Qui",
+        "friday": "Sex",
+        "saturday": "Sáb"
       }
     }
   }

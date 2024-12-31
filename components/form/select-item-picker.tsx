@@ -109,6 +109,7 @@ export function SelectItemPicker<ItemType>({
     text,
     icon,
     placeholder,
+    placeholderError,
     error,
     errorBackground,
     modalSheetView,
@@ -174,13 +175,11 @@ export function SelectItemPicker<ItemType>({
                   width={14}
                   height={14}
                   style={icon}
-                  fill={text.color}
+                  fill={haveError ? error.color : placeholder.color}
                 />
               )
             )}
-            <Text style={[text, haveError && error]}>
-              {getValueHandler(value).value}
-            </Text>
+            <Text style={text}>{getValueHandler(value).value}</Text>
             <TouchableOpacity
               activeOpacity={0.8}
               style={clear}
@@ -196,12 +195,10 @@ export function SelectItemPicker<ItemType>({
                 width={14}
                 height={14}
                 style={icon}
-                fill={placeholder.color}
+                fill={haveError ? error.color : placeholder.color}
               />
             )}
-            <Text style={[placeholder, haveError && error]}>
-              {placeholderText}
-            </Text>
+            <Text style={[placeholder, haveError && placeholderError]}>{placeholderText}</Text>
           </>
         )}
       </TouchableOpacity>
@@ -269,6 +266,10 @@ const styles = (colorScheme: Colors) =>
       fontFamily: "LatoRegular",
       color: colorScheme.text.secondary,
       fontSize: 14,
+    },
+    placeholderError: {
+      color: colorScheme.red.primary,
+      fontFamily: "LatoSemiBold",
     },
     error: {
       flex: 1,

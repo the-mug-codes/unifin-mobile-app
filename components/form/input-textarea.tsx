@@ -35,8 +35,16 @@ export function InputTextArea({
 }: InputTextAreaProps) {
   useState<boolean>(false);
   const colorScheme = useThemeColor();
-  const { label, wrapper, icon, input, placeholder, error, errorBackground } =
-    styles(colorScheme);
+  const {
+    label,
+    wrapper,
+    icon,
+    input,
+    placeholder,
+    placeholderError,
+    error,
+    errorBackground,
+  } = styles(colorScheme);
 
   return (
     <View style={style}>
@@ -53,7 +61,7 @@ export function InputTextArea({
               />
             )}
             <TextInput
-              style={[input, haveError && error]}
+              style={[input, haveError && placeholderError]}
               onChangeText={onChange}
               value={value}
               multiline
@@ -71,7 +79,8 @@ export function InputTextArea({
               />
             )}
             <TextInput
-              style={[placeholder, haveError && error]}
+              style={[placeholder, haveError && placeholderError]}
+              placeholderTextColor={haveError ? placeholderError.color : placeholder.color}
               placeholder={placeholderText}
               onChangeText={onChange}
               multiline
@@ -101,7 +110,6 @@ const styles = (colorScheme: Colors) =>
       backgroundColor: colorScheme.background.secondary,
     },
     input: {
-      flex: 1,
       padding: 12,
       fontFamily: "LatoRegular",
       color: colorScheme.text.primary,
@@ -118,6 +126,10 @@ const styles = (colorScheme: Colors) =>
       fontFamily: "LatoRegular",
       color: colorScheme.text.secondary,
       fontSize: 14,
+    },
+    placeholderError: {
+      color: colorScheme.red.primary,
+      fontFamily: "LatoSemiBold",
     },
     error: {
       flex: 1,

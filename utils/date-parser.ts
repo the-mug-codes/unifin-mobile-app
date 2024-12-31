@@ -22,7 +22,7 @@ export function formatDate(
   const month: number = date.getMonth();
   const year: number = date.getFullYear();
   const dayOfWeek: string = daysOfWeek[date.getDay()];
-  const getDayOfWeek: string = t(`calendar.week.long.${dayOfWeek}`);
+  const getDayOfWeek: string = t(`calendar.week.short.${dayOfWeek}`);
   const getMonth: string = t(
     `calendar.month.long.${MONTHS[month]}`
   ).toLowerCase();

@@ -35,7 +35,7 @@ export function InputText({
 }: InputTextProps) {
   useState<boolean>(false);
   const colorScheme = useThemeColor();
-  const { label, wrapper, icon, input, placeholder, error, errorBackground } =
+  const { label, wrapper, icon, input, placeholder, placeholderError, error, errorBackground } =
     styles(colorScheme);
 
   return (
@@ -49,11 +49,11 @@ export function InputText({
                 width={14}
                 height={14}
                 style={icon}
-                fill={placeholder.color}
+                fill={haveError ? error.color : placeholder.color}
               />
             )}
             <TextInput
-              style={[input, haveError && error]}
+              style={[input, haveError && placeholderError]}
               onChangeText={onChange}
               value={value}
             />
@@ -65,11 +65,12 @@ export function InputText({
                 width={14}
                 height={14}
                 style={icon}
-                fill={placeholder.color}
+                fill={haveError ? error.color : placeholder.color}
               />
             )}
             <TextInput
-              style={[placeholder, haveError && error]}
+              placeholderTextColor={haveError ? placeholderError.color : placeholder.color}
+              style={[placeholder, haveError && placeholderError]}
               placeholder={placeholderText}
               onChangeText={onChange}
             />
@@ -98,7 +99,6 @@ const styles = (colorScheme: Colors) =>
       backgroundColor: colorScheme.background.secondary,
     },
     input: {
-      flex: 1,
       padding: 12,
       fontFamily: "LatoRegular",
       color: colorScheme.text.primary,
@@ -113,6 +113,10 @@ const styles = (colorScheme: Colors) =>
       fontFamily: "LatoRegular",
       color: colorScheme.text.secondary,
       fontSize: 14,
+    },
+    placeholderError: {
+      color: colorScheme.red.primary,
+      fontFamily: "LatoSemiBold",
     },
     error: {
       flex: 1,

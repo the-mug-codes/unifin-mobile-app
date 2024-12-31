@@ -54,6 +54,7 @@ export function DateTimePicker({
     text,
     icon,
     placeholder,
+    placeholderError,
     error,
     errorBackground,
     clear,
@@ -82,18 +83,18 @@ export function DateTimePicker({
       t("calendar.month.long.december"),
     ],
     monthNamesShort: [
-      t("calendar.month.short.jan"),
-      t("calendar.month.short.feb"),
-      t("calendar.month.short.mar"),
-      t("calendar.month.short.apr"),
+      t("calendar.month.short.january"),
+      t("calendar.month.short.february"),
+      t("calendar.month.short.march"),
+      t("calendar.month.short.april"),
       t("calendar.month.short.may"),
-      t("calendar.month.short.jun"),
-      t("calendar.month.short.jul"),
-      t("calendar.month.short.aug"),
-      t("calendar.month.short.sep"),
-      t("calendar.month.short.oct"),
-      t("calendar.month.short.nov"),
-      t("calendar.month.short.dec"),
+      t("calendar.month.short.june"),
+      t("calendar.month.short.july"),
+      t("calendar.month.short.august"),
+      t("calendar.month.short.september"),
+      t("calendar.month.short.october"),
+      t("calendar.month.short.november"),
+      t("calendar.month.short.december"),
     ],
     dayNames: [
       t("calendar.week.long.sunday"),
@@ -105,13 +106,13 @@ export function DateTimePicker({
       t("calendar.week.long.saturday"),
     ],
     dayNamesShort: [
-      t("calendar.week.short.sun"),
-      t("calendar.week.short.mon"),
-      t("calendar.week.short.tue"),
-      t("calendar.week.short.wed"),
-      t("calendar.week.short.thu"),
-      t("calendar.week.short.fri"),
-      t("calendar.week.short.sat"),
+      t("calendar.week.short.sunday"),
+      t("calendar.week.short.monday"),
+      t("calendar.week.short.tuesday"),
+      t("calendar.week.short.wednesday"),
+      t("calendar.week.short.thursday"),
+      t("calendar.week.short.friday"),
+      t("calendar.week.short.saturday"),
     ],
   };
 
@@ -183,7 +184,7 @@ export function DateTimePicker({
                 width={14}
                 height={14}
                 style={icon}
-                fill={haveError ? error.color : text.color}
+                fill={haveError ? error.color : placeholder.color}
               />
             )}
             <Text style={text}>{formatDate(t, new Date(value), true)}</Text>
@@ -202,10 +203,10 @@ export function DateTimePicker({
                 width={14}
                 height={14}
                 style={icon}
-                fill={placeholder.color}
+                fill={haveError ? error.color : placeholder.color}
               />
             )}
-            <Text style={placeholder}>{placeholderText}</Text>
+            <Text style={[placeholder, haveError && placeholderError]}>{placeholderText}</Text>
           </>
         )}
       </TouchableOpacity>
@@ -279,6 +280,10 @@ const styles = (colorScheme: Colors) =>
       fontFamily: "LatoRegular",
       color: colorScheme.text.secondary,
       fontSize: 14,
+    },
+    placeholderError: {
+      color: colorScheme.red.primary,
+      fontFamily: "LatoSemiBold",
     },
     error: {
       flex: 1,

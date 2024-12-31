@@ -30,16 +30,18 @@ export function SimpleSwitch({
 }: SimpleSwitchProps) {
   useState<boolean>(false);
   const colorScheme = useThemeColor();
-  const { label, input, error, errorBackground } = styles(colorScheme);
+  const { container, label, error } = styles(colorScheme);
 
   return (
     <View style={style}>
       <Text style={label}>{labelText}</Text>
-      <Switch
-        value={value}
-        onValueChange={onChange}
-        trackColor={{ true: colorScheme.brand.primary }}
-      />
+      <View style={container}>
+        <Switch
+          value={value}
+          onValueChange={onChange}
+          trackColor={{ true: colorScheme.brand.primary }}
+        />
+      </View>
       {haveError && <Text style={error}>{errorMessage}</Text>}
     </View>
   );
@@ -53,15 +55,9 @@ const styles = (colorScheme: Colors) =>
       color: colorScheme.text.secondary,
       fontSize: 16,
     },
-    input: {
+    container: {
       flex: 1,
-      marginVertical: 14,
-      borderRadius: 6,
-      padding: 12,
-      backgroundColor: colorScheme.background.secondary,
-      fontFamily: "LatoRegular",
-      color: colorScheme.text.primary,
-      fontSize: 14,
+      marginVertical: 18,
     },
     error: {
       flex: 1,
@@ -69,9 +65,5 @@ const styles = (colorScheme: Colors) =>
       color: colorScheme.red.primary,
       fontSize: 12,
       marginBottom: 6,
-    },
-    errorBackground: {
-      color: colorScheme.red.primary,
-      backgroundColor: colorScheme.red.secondary,
     },
   });

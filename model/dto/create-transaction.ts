@@ -1,3 +1,8 @@
+export interface CreateTransactionRecurrence {
+  recurrence: string;
+  limit?: number;
+}
+
 export interface CreateTransactionBasic {
   date: Date;
   kind: "income" | "expense" | "transfer";
@@ -9,7 +14,7 @@ export interface CreateTransactionBasic {
   tagsIDs?: string[];
   notes?: string;
   repeat?: {
-    recurrence: string;
+    recurrence?: string;
     limit?: number;
   };
 }
@@ -26,7 +31,7 @@ export interface CreateTransactionCreditCard {
   tagsIDs?: string[];
   notes?: string;
   repeat?: {
-    recurrence: string;
+    recurrence?: string;
     limit?: number;
   };
 }

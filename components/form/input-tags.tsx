@@ -104,6 +104,7 @@ export function InputTags<ItemType>({
     wrapper,
     text,
     placeholder,
+    placeholderError,
     icon,
     tag,
     tagText,
@@ -186,7 +187,7 @@ export function InputTags<ItemType>({
                 width={14}
                 height={14}
                 style={icon}
-                fill={haveError ? error.color : text.color}
+                fill={haveError ? error.color : placeholder.color}
               />
             )}
             {getValueHandler(value).map(({ id, value }) => (
@@ -196,7 +197,7 @@ export function InputTags<ItemType>({
                 style={tag}
                 onPress={() => removeItemHandler(id)}
               >
-                <Text style={[tagText, haveError && error]}>{value}</Text>
+                <Text style={tagText}>{value}</Text>
                 <CloseIcon
                   width={12}
                   height={12}
@@ -213,10 +214,10 @@ export function InputTags<ItemType>({
                 width={14}
                 height={14}
                 style={icon}
-                fill={placeholder.color}
+                fill={haveError ? error.color : placeholder.color}
               />
             )}
-            <Text style={[placeholder, haveError && error, { padding: 6 }]}>
+            <Text style={[placeholder, haveError && placeholderError]}>
               {placeholderText}
             </Text>
           </>
@@ -276,6 +277,10 @@ const styles = (colorScheme: Colors) =>
       fontFamily: "LatoRegular",
       color: colorScheme.text.secondary,
       fontSize: 14,
+    },
+    placeholderError: {
+      color: colorScheme.red.primary,
+      fontFamily: "LatoSemiBold",
     },
     icon: {
       marginHorizontal: 6,

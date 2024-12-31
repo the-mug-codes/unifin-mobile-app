@@ -59,6 +59,7 @@ export function RecurrencePicker({
     text,
     icon,
     placeholder,
+    placeholderError,
     error,
     errorBackground,
     modalSheetView,
@@ -121,7 +122,7 @@ export function RecurrencePicker({
     <View style={style}>
       <Text style={label}>{labelText}</Text>
       <View style={container}>
-        {!value && (
+        {!value ? (
           <>
             <TouchableOpacity
               style={button}
@@ -131,50 +132,39 @@ export function RecurrencePicker({
               <Text style={buttonText}>{t("split")}</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[button, { marginHorizontal: 12 }]}
+              style={[button, { marginLeft: 12 }]}
               onPress={() => showRecurrencePickerHandler("fixed")}
               activeOpacity={0.8}
             >
               <Text style={buttonText}>{t("fixed")}</Text>
             </TouchableOpacity>
           </>
+        ) : (
+          <View style={[wrapper, haveError && errorBackground]}>
+            {Icon && (
+              <Icon
+                width={14}
+                height={14}
+                style={icon}
+                fill={haveError ? error.color : placeholder.color}
+              />
+            )}
+            <Text style={haveError ? placeholderError : text}>
+              {getValueHandler(value.recurrence, value.limit)}
+            </Text>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={clear}
+              onPress={clearValuesHandler}
+            >
+              <CloseIcon
+                width={12}
+                height={12}
+                fill={haveError ? error.color : clearIcon.color}
+              />
+            </TouchableOpacity>
+          </View>
         )}
-        <View style={[wrapper, haveError && errorBackground]}>
-          {value ? (
-            <>
-              {Icon && (
-                <Icon
-                  width={14}
-                  height={14}
-                  style={icon}
-                  fill={haveError ? error.color : text.color}
-                />
-              )}
-              <Text style={text}>
-                {getValueHandler(value.recurrence, value.limit)}
-              </Text>
-              <TouchableOpacity
-                activeOpacity={0.8}
-                style={clear}
-                onPress={clearValuesHandler}
-              >
-                <CloseIcon width={12} height={12} fill={clearIcon.color} />
-              </TouchableOpacity>
-            </>
-          ) : (
-            <>
-              {Icon && (
-                <Icon
-                  width={14}
-                  height={14}
-                  style={icon}
-                  fill={placeholder.color}
-                />
-              )}
-              <Text style={placeholder}>{placeholderText}</Text>
-            </>
-          )}
-        </View>
       </View>
       {haveError && <Text style={error}>{errorMessage}</Text>}
       <BottomSheetModal
@@ -263,6 +253,7 @@ const styles = (colorScheme: Colors) =>
       marginVertical: 14,
     },
     button: {
+      flex:1,
       alignItems: "center",
       justifyContent: "center",
       borderRadius: 6,
@@ -298,6 +289,10 @@ const styles = (colorScheme: Colors) =>
       fontFamily: "LatoRegular",
       color: colorScheme.text.secondary,
       fontSize: 14,
+    },
+    placeholderError: {
+      color: colorScheme.red.primary,
+      fontFamily: "LatoSemiBold",
     },
     error: {
       flex: 1,

@@ -1,5 +1,7 @@
 import { Transaction } from "@/model/transaction";
 
+export type Errors = { [key: string]: string };
+
 export type TransactionListVariant = "section" | "transaction" | "blank";
 
 interface TransactionListSection {
