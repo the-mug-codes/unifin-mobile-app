@@ -24,25 +24,26 @@ export default function MoneyInput({
   const handleChange = (value: string) => {
     const numericValue = value.replace(/[^0-9]/g, "");
     if (!numericValue) {
-      setAmount("0.00");
+      setAmount(moneyParser(0));
       return;
     }
     const parsedValue = parseFloat(numericValue) / 100;
-    setAmount(parsedValue.toString());
+    setAmount(moneyParser(parsedValue));
   };
-  
+
   const handleFocus = () => {
     if (amount) {
       const valueWithoutPrefix = amount
         .replace(/[^0-9,.-]/g, "")
         .replace(",", ".");
+
       const parsedValue = parseFloat(valueWithoutPrefix);
       if (!isNaN(parsedValue)) {
-        setAmount(parsedValue.toFixed(2));
+        setAmount(moneyParser(parsedValue));
       }
     }
   };
-  
+
   const handleBlur = () => {
     if (amount) {
       const numericValue = parseFloat(
